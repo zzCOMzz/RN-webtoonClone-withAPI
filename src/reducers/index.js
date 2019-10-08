@@ -9,6 +9,7 @@ export const initLoginState = {
 export const LoginReducer = (state = initLoginState, action) => {
   switch (action.type) {
     case 'LOGIN':
+      action.payload.navigation.navigate('App');
       return {
         ...state,
         count: state.count + 1,

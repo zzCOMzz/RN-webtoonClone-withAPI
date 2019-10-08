@@ -10,7 +10,7 @@ import {Text, Input, Label, Button, Item, Form, Icon} from 'native-base';
 import {LoginReducer, initLoginState} from 'reducers';
 import LogoWebtoon from 'Assets/webtoon-logo.png';
 
-const Login = () => {
+const Login = props => {
   const [state, dispatch] = useReducer(LoginReducer, initLoginState);
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
@@ -115,10 +115,10 @@ const Login = () => {
               </Item>
             </Item>
 
-            <View style={{marginTop: 40, paddingHorizontal: 40}}>
+            <View style={Styles.btnSubmitView}>
               <Button
                 rounded
-                onPress={() => alert('Login')}
+                onPress={() => dispatch({type: 'LOGIN', payload: props})}
                 disabled={btnActive}
                 style={[
                   {justifyContent: 'center'},
@@ -145,7 +145,8 @@ const Styles = StyleSheet.create({
   headerTop: {alignItems: 'center', marginTop: 40},
   containerTextHeader: {alignItems: 'center', marginTop: 25},
   imageContainer: {width: 150, height: 150},
-  formContainer: {marginTop: 50, paddingRight: 20},
+  formContainer: {marginTop: 50, paddingRight: 15},
+  btnSubmitView: {marginTop: 40, paddingHorizontal: 40},
 });
 
 export default Login;
