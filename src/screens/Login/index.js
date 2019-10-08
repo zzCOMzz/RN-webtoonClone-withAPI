@@ -1,5 +1,11 @@
-import React, {useReducer, useState, useEffect} from 'react';
-import {View, KeyboardAvoidingView, SafeAreaView, Image} from 'react-native';
+import React, {useReducer, useState} from 'react';
+import {
+  View,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  Image,
+  StyleSheet,
+} from 'react-native';
 import {Text, Input, Label, Button, Item, Form, Icon} from 'native-base';
 import {LoginReducer, initLoginState} from 'reducers';
 import LogoWebtoon from 'Assets/webtoon-logo.png';
@@ -47,14 +53,15 @@ const Login = () => {
     <SafeAreaView>
       <KeyboardAvoidingView behavior="position">
         <View style={{justifyContent: 'center'}}>
-          <View style={{alignItems: 'center', marginTop: 40}}>
-            <Image style={{width: 150, height: 150}} source={LogoWebtoon} />
-            <View style={{alignItems: 'center', marginTop: 25}}>
+          <View style={Styles.headerTop}>
+            <Image style={Styles.imageContainer} source={LogoWebtoon} />
+            <View style={Styles.containerTextHeader}>
               <Text style={{fontSize: 40}}>LOG IN</Text>
               <Text>Login with your WEBTOON account</Text>
             </View>
           </View>
-          <Form style={{marginTop: 50, paddingRight: 20}}>
+
+          <Form style={Styles.formContainer}>
             <Item stackedLabel error={isError} success={isValid}>
               {isValid ? (
                 <Label style={{color: 'green'}}>Format Email Valid</Label>
@@ -107,6 +114,7 @@ const Login = () => {
                 )}
               </Item>
             </Item>
+
             <View style={{marginTop: 40, paddingHorizontal: 40}}>
               <Button
                 rounded
@@ -132,5 +140,12 @@ const Login = () => {
     </SafeAreaView>
   );
 };
+
+const Styles = StyleSheet.create({
+  headerTop: {alignItems: 'center', marginTop: 40},
+  containerTextHeader: {alignItems: 'center', marginTop: 25},
+  imageContainer: {width: 150, height: 150},
+  formContainer: {marginTop: 50, paddingRight: 20},
+});
 
 export default Login;
