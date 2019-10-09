@@ -7,11 +7,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import {Text, Input, Label, Button, Item, Form, Icon} from 'native-base';
-import {LoginReducer, initLoginState} from 'reducers';
+import {appReducer, initLoginState} from 'reducers';
 import LogoWebtoon from 'Assets/webtoon-logo.png';
 
 const Login = props => {
-  const [state, dispatch] = useReducer(LoginReducer, initLoginState);
+  const [state, dispatch] = useReducer(appReducer, initLoginState);
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [visible, setVisible] = useState(true);
@@ -118,7 +118,14 @@ const Login = props => {
             <View style={Styles.btnSubmitView}>
               <Button
                 rounded
-                onPress={() => dispatch({type: 'LOGIN', payload: props})}
+                onPress={() => {
+                  dispatch({
+                    type: 'LOGIN',
+                    userData: JSON.stringify({email, pass}),
+                  });
+
+                  props.navigation.navigate('AuthLoading');
+                }}
                 disabled={btnActive}
                 style={[
                   {justifyContent: 'center'},

@@ -1,21 +1,11 @@
+import React from 'react';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-import ForYouScreen from './ForYou';
-import FavouriteScreen from './Favourite';
+
+import BottomTabStack from './bottomTab';
 import LoginScreen from './Login';
 import AuthLoadingScreen from './AuthLoading';
 
-const AppStack = createStackNavigator({
-  Home: {
-    screen: ForYouScreen,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  Favourite: {
-    screen: FavouriteScreen,
-  },
-});
 const AuthStack = createStackNavigator({
   Login: {
     screen: LoginScreen,
@@ -29,11 +19,11 @@ export default createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading: AuthLoadingScreen,
-      App: AppStack,
+      App: BottomTabStack,
       Auth: AuthStack,
     },
     {
-      initialRouteName: 'Auth',
+      initialRouteName: 'App',
     },
   ),
 );
