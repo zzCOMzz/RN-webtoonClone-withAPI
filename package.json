@@ -20,8 +20,7 @@
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.0.10",
     "react-navigation-material-bottom-tabs": "^2.1.2",
-    "react-navigation-stack": "^1.9.3",
-    "react-navigation-tabs": "^2.5.5"
+    "react-navigation-stack": "^1.9.3"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",

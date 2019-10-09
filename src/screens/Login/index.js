@@ -50,7 +50,7 @@ const Login = props => {
   };
 
   return (
-    <SafeAreaView>
+    <View>
       <KeyboardAvoidingView behavior="position">
         <View style={{justifyContent: 'center'}}>
           <View style={Styles.headerTop}>
@@ -144,7 +144,7 @@ const Login = props => {
           </Form>
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 
