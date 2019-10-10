@@ -40,7 +40,7 @@ export default class Creation extends Component {
         <Fab
           direction="up"
           containerStyle={{}}
-          style={{backgroundColor: '#5067FF'}}
+          style={{backgroundColor: 'orange'}}
           position="bottomRight"
           onPress={() => alert('hello world')}>
           <Icon name="add" />
