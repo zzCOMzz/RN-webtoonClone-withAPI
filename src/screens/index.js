@@ -11,6 +11,7 @@ import LoginScreen from './Login';
 import AuthLoadingScreen from './AuthLoading';
 import Details from './Details';
 import DetailEpisode from './DetailEpisode';
+import EditProfile from './EditProfile';
 
 const AuthStack = createStackNavigator({
   Login: {
@@ -41,6 +42,12 @@ const AppStack = createStackNavigator(
       navigationOptions: {
         headerTitle: <Header titleText="Ep. 1" />,
         headerRight: <ButtonShare iconName="share" />,
+      },
+    },
+    EditProfile: {
+      screen: EditProfile,
+      navigationOptions: {
+        header: null,
       },
     },
   },
