@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Image, FlatList, Dimensions} from 'react-native';
-import {Card, CardItem} from 'native-base';
+
 import {initLoginState} from 'reducers';
 
 class DetailEpisode extends Component {
