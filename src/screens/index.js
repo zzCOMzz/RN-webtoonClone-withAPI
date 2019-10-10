@@ -6,6 +6,8 @@ import BottomTabStack from './bottomTab';
 import LoginScreen from './Login';
 import AuthLoadingScreen from './AuthLoading';
 
+import Details from './Details';
+
 const AuthStack = createStackNavigator({
   Login: {
     screen: LoginScreen,
@@ -15,11 +17,29 @@ const AuthStack = createStackNavigator({
   },
 });
 
+const AppStack = createStackNavigator(
+  {
+    bottomTab: {
+      screen: BottomTabStack,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    Details: {
+      screen: Details,
+      navigationOptions: {
+        headerTitle: 'Details',
+      },
+    },
+  },
+  {},
+);
+
 export default createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading: AuthLoadingScreen,
-      App: BottomTabStack,
+      App: AppStack,
       Auth: AuthStack,
     },
     {

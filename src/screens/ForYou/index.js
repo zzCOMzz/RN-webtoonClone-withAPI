@@ -46,15 +46,13 @@ class ScreenForYou extends React.Component {
           nestedScrollEnabled={false}
           style={{marginBottom: '10%'}}
           showsVerticalScrollIndicator={false}>
-          <View>
-            <Item style={Styles.bannerSlide}>
-              <Slideshow
-                dataSource={dataImage}
-                position={position}
-                onPositionChanged={position => this.setState({position})}
-              />
-            </Item>
-          </View>
+          <Item style={Styles.bannerSlide}>
+            <Slideshow
+              dataSource={dataImage}
+              position={position}
+              onPositionChanged={position => this.setState({position})}
+            />
+          </Item>
 
           <View style={{marginTop: 10}}>
             <View style={{marginLeft: 10}}>
@@ -67,7 +65,8 @@ class ScreenForYou extends React.Component {
                 data={dataImage}
                 renderItem={({item}) => (
                   <Card>
-                    <CardItem>
+                    <CardItem
+                      onPress={() => this.props.navigation.navigate('Details')}>
                       <Image
                         source={{uri: item.url}}
                         style={{height: 100, width: 100}}
@@ -87,10 +86,9 @@ class ScreenForYou extends React.Component {
               <Text style={{fontSize: 20}}>All</Text>
             </View>
             <View>
-              <FlatList
-                data={dataImage}
-                renderItem={({item}) => (
-                  <Card>
+              {dataImage.map(item => {
+                return (
+                  <Card key={item.id}>
                     <CardItem>
                       <Image
                         source={{uri: item.url}}
@@ -98,15 +96,19 @@ class ScreenForYou extends React.Component {
                       />
                       <View style={{marginLeft: 15}}>
                         <Text style={{fontSize: 16}}>{item.title}</Text>
-                        <Button warning style={Styles.btnFavour}>
+                        <Button
+                          onPress={() =>
+                            this.props.navigation.navigate('Details')
+                          }
+                          warning
+                          style={Styles.btnFavour}>
                           <Text>+ Favourite</Text>
                         </Button>
                       </View>
                     </CardItem>
                   </Card>
-                )}
-                keyExtractor={item => item.id}
-              />
+                );
+              })}
             </View>
           </View>
         </ScrollView>
