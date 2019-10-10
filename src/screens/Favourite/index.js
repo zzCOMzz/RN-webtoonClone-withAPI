@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  FlatList,
-  Image,
-} from 'react-native';
+import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
 import {Item, Input, Icon, Card, CardItem, Button} from 'native-base';
 import {initLoginState} from 'reducers';
 
@@ -36,7 +29,7 @@ class FavouriteScreen extends Component {
   render() {
     const {dataImage} = this.state;
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, marginHorizontal: 10}}>
         <Item rounded style={Styles.searchInput}>
           <Input
             placeholder="Search"
@@ -47,21 +40,16 @@ class FavouriteScreen extends Component {
         </Item>
         <View>
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={dataImage}
             renderItem={({item}) => {
               return (
                 <Card key={item.id}>
                   <CardItem>
-                    <Image
-                      source={{uri: item.url}}
-                      style={{height: 100, width: 100}}
-                    />
+                    <Image source={{uri: item.url}} style={Styles.image} />
                     <View style={{marginLeft: 15}}>
-                      <Text style={{fontSize: 16}}>{item.title}</Text>
-
-                      <Text>
-                        {Math.floor(Math.random() * 99)} Favourite
-                      </Text>
+                      <Text style={Styles.titleItem}>{item.title}</Text>
+                      <Text>{Math.floor(Math.random() * 99)} Favourite</Text>
                     </View>
                   </CardItem>
                 </Card>
@@ -82,6 +70,8 @@ const Styles = StyleSheet.create({
     borderWidth: 8,
     marginBottom: 5,
   },
+  titleItem: {fontSize: 20, fontWeight: 'bold'},
+  image: {height: 120, width: 120},
 });
 
 export default FavouriteScreen;
