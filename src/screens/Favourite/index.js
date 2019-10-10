@@ -8,32 +8,36 @@ class FavouriteScreen extends Component {
     super(props);
     this.state = {
       dataImage: initLoginState.banners,
+      inputValue: '',
     };
   }
 
-  filterMethod = input => {
-    if (input.trim() === '') {
-      this.setState({dataImage: initLoginState.banners});
-    } else {
-      const newImage = this.state.dataImage.filter(item => {
-        const textInput = input.toUpperCase();
-        const titleText = item.title.toUpperCase();
-        if (titleText.indexOf(textInput) > -1) {
-          return item;
-        }
-      });
-      this.setState({dataImage: newImage});
-    }
-  };
+  // filterMethod = input => {
+  //   if (input.trim() === '') {
+  //     this.setState({dataImage: initLoginState.banners});
+  //   } else {
+  //     const newImage = this.state.dataImage.filter(item => {
+  //       const textInput = input.toUpperCase();
+  //       const titleText = item.title.toUpperCase();
+  //       if (titleText.indexOf(textInput) > -1) {
+  //         return item;
+  //       }
+  //     });
+  //     this.setState({dataImage: newImage});
+  //   }
+  // };
 
   render() {
-    const {dataImage} = this.state;
+    const {dataImage, inputValue} = this.state;
     return (
       <View style={{flex: 1, marginHorizontal: 10}}>
         <Item rounded style={Styles.searchInput}>
           <Input
+            value={inputValue}
             placeholder="Search"
-            onChangeText={text => this.filterMethod(text)}
+            onChangeText={text =>
+              this.setState({inputValue: text.toLowerCase()})
+            }
             style={{marginHorizontal: 5}}
           />
           <Icon name="search" />
@@ -41,7 +45,9 @@ class FavouriteScreen extends Component {
         <View style={{flex: 1}}>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={dataImage}
+            data={dataImage.filter(item => {
+              return item.title.toLowerCase().includes(inputValue);
+            })}
             renderItem={({item}) => {
               return (
                 <Card key={item.id}>
