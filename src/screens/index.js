@@ -5,6 +5,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 //? Import Component
 import Header from 'components/header';
 import ButtonShare from 'components/buttonShare';
+import ButtonWithFunc from 'components/buttonFunc';
 //? Import Screens
 import BottomTabStack from './bottomTab';
 import LoginScreen from './Login';
@@ -13,6 +14,7 @@ import Details from './Details';
 import DetailEpisode from './DetailEpisode';
 import EditProfile from './Profile/EditProfile';
 import CreationScreen from './Creation';
+import CreateWebtoon from './Creation/createWebtoon';
 
 const AuthStack = createStackNavigator({
   Login: {
@@ -55,6 +57,18 @@ const AppStack = createStackNavigator(
       screen: CreationScreen,
       navigationOptions: {
         headerTitle: <Header titleText="My Webtoon" />,
+      },
+    },
+    CreationWebtoon: {
+      screen: CreateWebtoon,
+      navigationOptions: {
+        headerTitle: <Header titleText="Create Webtoon" />,
+        headerRight: (
+          <ButtonWithFunc
+            handleFunct={() => alert('helo')}
+            iconName="checkmark"
+          />
+        ),
       },
     },
   },

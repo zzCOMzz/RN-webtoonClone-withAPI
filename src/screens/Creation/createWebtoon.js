@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
-import {Item, Input, Icon, Card, CardItem, Button, Fab} from 'native-base';
+import {Item, Input, Icon, Card, CardItem, Button, Label} from 'native-base';
 import {initLoginState} from 'reducers';
 export default class Creation extends Component {
   constructor(props) {
@@ -15,19 +15,27 @@ export default class Creation extends Component {
     const {dataImage} = this.state;
     return (
       <View style={{flex: 1, marginHorizontal: 10}}>
-        <View style={{flex: 1}}>
+        <View style={{marginTop: '3%'}}>
+          <Text style={{fontSize: 20}}>Title</Text>
+          <Item reguler style={Styles.searchInput}>
+            <Input placeholder="Title" style={{marginHorizontal: 10}} />
+          </Item>
+        </View>
+        <View style={{flex: 1, marginTop: '2%'}}>
+          <Text style={{fontSize: 20}}>Episode</Text>
           <FlatList
             showsVerticalScrollIndicator={false}
             data={dataImage}
             renderItem={({item}) => {
+              let date = item.id + 1;
               return (
                 <Card key={item.id}>
                   <CardItem>
                     <Image source={{uri: item.url}} style={Styles.image} />
                     <View style={{marginLeft: 15}}>
-                      <Text style={Styles.titleItem}>{item.title}</Text>
-                      <Text style={{fontSize: 15}}>
-                        {Math.floor(Math.random() * 99)} Episode(s)
+                      <Text style={Styles.titleItem}>Ep. {item.id + 1}</Text>
+                      <Text style={{fontSize: 12}}>
+                        {(date += date + item.id)} May 2019
                       </Text>
                     </View>
                   </CardItem>
@@ -37,14 +45,11 @@ export default class Creation extends Component {
             keyExtractor={item => item.id}
           />
         </View>
-        <Fab
-          direction="up"
-          containerStyle={{}}
-          style={{backgroundColor: 'orange'}}
-          position="bottomRight"
-          onPress={() => this.props.navigation.navigate('CreationWebtoon')}>
-          <Icon name="add" />
-        </Fab>
+        <View style={{flex: 1, marginTop: 10}}>
+          <Button warning style={{justifyContent: 'center'}}>
+            <Text style={{color: 'white'}}>+ Add Episode</Text>
+          </Button>
+        </View>
       </View>
     );
   }
@@ -52,11 +57,9 @@ export default class Creation extends Component {
 
 const Styles = StyleSheet.create({
   searchInput: {
-    marginTop: '2%',
-    borderRadius: 15,
     borderWidth: 8,
     marginBottom: 5,
   },
-  titleItem: {fontSize: 20, fontWeight: 'bold'},
-  image: {height: 80, width: 65},
+  titleItem: {fontSize: 16, fontWeight: 'bold'},
+  image: {height: 60, width: 50},
 });
