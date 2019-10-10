@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
-import {Icon} from 'native-base';
 
 class Header extends Component {
   constructor(props) {

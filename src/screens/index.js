@@ -33,14 +33,14 @@ const AppStack = createStackNavigator(
       screen: Details,
       navigationOptions: {
         headerTitle: <Header titleText="Details" />,
-        headerRight: <ButtonShare />,
+        headerRight: <ButtonShare iconName="share" />,
       },
     },
     DetailEpisode: {
       screen: DetailEpisode,
       navigationOptions: {
         headerTitle: <Header titleText="Ep. 1" />,
-        headerRight: <ButtonShare />,
+        headerRight: <ButtonShare iconName="share" />,
       },
     },
   },

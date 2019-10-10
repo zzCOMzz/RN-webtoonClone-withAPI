@@ -15,7 +15,10 @@ class ButtonShare extends Component {
   render() {
     return (
       <Content style={{marginRight: 30}}>
-        <Icon onPress={() => Share.share(this.shareOptions)} name="share" />
+        <Icon
+          onPress={() => Share.share(this.shareOptions)}
+          name={this.props.iconName}
+        />
       </Content>
     );
   }

@@ -2,9 +2,16 @@ import React from 'react';
 import {View} from 'react-native';
 import {Icon} from 'native-base';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
+
+//? Import Component
+import Header from 'components/header';
+import ButtonShare from 'components/buttonShare';
+
+//? Import Screen
 import ForYouScreen from './ForYou';
 import FavouriteScreen from './Favourite';
 import ProfileScreen from './Profile';
+import {createStackNavigator} from 'react-navigation-stack';
 
 const BottomTabStack = createMaterialBottomTabNavigator(
   {
