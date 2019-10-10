@@ -10,6 +10,7 @@ import BottomTabStack from './bottomTab';
 import LoginScreen from './Login';
 import AuthLoadingScreen from './AuthLoading';
 import Details from './Details';
+import DetailEpisode from './DetailEpisode';
 
 const AuthStack = createStackNavigator({
   Login: {
@@ -31,7 +32,14 @@ const AppStack = createStackNavigator(
     Details: {
       screen: Details,
       navigationOptions: {
-        headerTitle: <Header />,
+        headerTitle: <Header titleText="Details" />,
+        headerRight: <ButtonShare />,
+      },
+    },
+    DetailEpisode: {
+      screen: DetailEpisode,
+      navigationOptions: {
+        headerTitle: <Header titleText="Ep. 1" />,
         headerRight: <ButtonShare />,
       },
     },

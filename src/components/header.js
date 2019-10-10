@@ -9,7 +9,7 @@ class Header extends Component {
   render() {
     return (
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <Text style={{fontSize: 20}}>Hello Webtoon</Text>
+        <Text style={{fontSize: 20}}>{this.props.titleText}</Text>
       </View>
     );
   }
