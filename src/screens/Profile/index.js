@@ -44,10 +44,13 @@ class ProfileScreen extends Component {
           </View>
         </View>
         <View style={{marginTop: 40}}>
-          <View style={Styles.creation}>
-            <Text style={{fontSize: 25}}>My Webtoon Creation</Text>
-            <Icon name="ios-arrow-forward" style={{margin: 4}} />
-          </View>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Creation')}>
+            <View style={Styles.creation}>
+              <Text style={{fontSize: 25}}>My Webtoon Creation</Text>
+              <Icon name="ios-arrow-forward" style={{margin: 4}} />
+            </View>
+          </TouchableOpacity>
           <View style={Styles.logoutBtn}>
             <Text style={{fontSize: 25}}>Log Out</Text>
           </View>

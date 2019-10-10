@@ -12,6 +12,7 @@ import AuthLoadingScreen from './AuthLoading';
 import Details from './Details';
 import DetailEpisode from './DetailEpisode';
 import EditProfile from './Profile/EditProfile';
+import CreationScreen from './Creation';
 
 const AuthStack = createStackNavigator({
   Login: {
@@ -48,6 +49,12 @@ const AppStack = createStackNavigator(
       screen: EditProfile,
       navigationOptions: {
         header: null,
+      },
+    },
+    Creation: {
+      screen: CreationScreen,
+      navigationOptions: {
+        headerTitle: <Header titleText="My Webtoon" />,
       },
     },
   },
