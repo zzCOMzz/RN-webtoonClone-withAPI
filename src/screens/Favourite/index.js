@@ -38,7 +38,7 @@ class FavouriteScreen extends Component {
           />
           <Icon name="search" />
         </Item>
-        <View>
+        <View style={{flex: 1}}>
           <FlatList
             showsVerticalScrollIndicator={false}
             data={dataImage}
