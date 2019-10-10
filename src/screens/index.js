@@ -17,6 +17,7 @@ import CreationScreen from './Creation';
 import CreateWebtoon from './Creation/createWebtoon';
 import CreateWebtoonEpisode from './Creation/createEpisode';
 import EditWebtoon from './Creation/editWebtoon';
+import EditEpisode from './Creation/editEpisode';
 
 const AuthStack = createStackNavigator({
   Login: {
@@ -89,6 +90,18 @@ const AppStack = createStackNavigator(
       screen: EditWebtoon,
       navigationOptions: {
         headerTitle: <Header titleText="Edit Webtoon" />,
+        headerRight: (
+          <ButtonWithFunc
+            handleFunct={() => alert('Edit Episode')}
+            iconName="checkmark"
+          />
+        ),
+      },
+    },
+    EditEpisode: {
+      screen: EditEpisode,
+      navigationOptions: {
+        headerTitle: <Header titleText="Edit Episode" />,
         headerRight: (
           <ButtonWithFunc
             handleFunct={() => alert('Edit Episode')}

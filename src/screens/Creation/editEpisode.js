@@ -1,9 +1,16 @@
 import React, {Component} from 'react';
 
-import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {Item, Input, Icon, Card, CardItem, Button, Label} from 'native-base';
 import {initLoginState} from 'reducers';
-export default class CreateEpisode extends Component {
+export default class EditEpisode extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,13 +23,13 @@ export default class CreateEpisode extends Component {
     return (
       <View style={{flex: 1, marginHorizontal: 10}}>
         <View style={{marginTop: '3%'}}>
-          <Text style={{fontSize: 20}}>Name</Text>
+          <Text style={{fontSize: 20}}>Title</Text>
           <Item reguler style={Styles.searchInput}>
-            <Input placeholder="Name" style={{marginHorizontal: 10}} />
+            <Input value={'Ep.1'} style={{marginHorizontal: 10}} />
           </Item>
         </View>
-        <View style={{flex: 1, marginTop: '5%'}}>
-          <Text style={{fontSize: 20}}>Add Image</Text>
+        <View style={{flex: 1, marginTop: '2%'}}>
+          <Text style={{fontSize: 20}}>Episode</Text>
           <FlatList
             showsVerticalScrollIndicator={false}
             data={dataImage}
@@ -32,15 +39,10 @@ export default class CreateEpisode extends Component {
                 <Card key={item.id}>
                   <CardItem>
                     <Image source={{uri: item.url}} style={Styles.image} />
-                    <View style={{marginLeft: 20}}>
+                    <View style={{marginLeft: 15}}>
                       <Text style={Styles.titleItem}>
-                        Gambar{item.id + 1}.png{' '}
+                        Gambar{item.id + 1}.png
                       </Text>
-                      <Button
-                        warning
-                        style={{justifyContent: 'center', height: 20}}>
-                        <Text style={{fontSize: 12}}>Delete</Text>
-                      </Button>
                     </View>
                   </CardItem>
                 </Card>
@@ -50,8 +52,24 @@ export default class CreateEpisode extends Component {
           />
         </View>
         <View style={{flex: 1, marginTop: 10}}>
-          <Button style={{justifyContent: 'center', backgroundColor: 'gray'}}>
-            <Text style={{color: 'white', fontSize: 20}}>+ Image</Text>
+          <Button
+            warning
+            onPress={() =>
+              this.props.navigation.navigate('CreateWebtoonEpisode')
+            }
+            style={{justifyContent: 'center'}}>
+            <Text style={{color: 'white'}}>+ Image</Text>
+          </Button>
+          <Button
+            transparent
+            onPress={() => alert('Episode Deleted')}
+            style={{
+              justifyContent: 'center',
+              borderWidth: 3,
+              marginTop: 20,
+              borderColor: 'red',
+            }}>
+            <Text style={{color: 'black'}}>Delete Episode</Text>
           </Button>
         </View>
       </View>

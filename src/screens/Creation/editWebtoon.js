@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
 
-import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {Item, Input, Icon, Card, CardItem, Button, Label} from 'native-base';
 import {initLoginState} from 'reducers';
 export default class EditEpisode extends Component {
@@ -30,15 +37,20 @@ export default class EditEpisode extends Component {
               let date = item.id + 1;
               return (
                 <Card key={item.id}>
-                  <CardItem>
-                    <Image source={{uri: item.url}} style={Styles.image} />
-                    <View style={{marginLeft: 15}}>
-                      <Text style={Styles.titleItem}>Ep. {item.id + 1}</Text>
-                      <Text style={{fontSize: 12}}>
-                        {(date += date + item.id)} May 2019
-                      </Text>
-                    </View>
-                  </CardItem>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('EditEpisode')
+                    }>
+                    <CardItem>
+                      <Image source={{uri: item.url}} style={Styles.image} />
+                      <View style={{marginLeft: 15}}>
+                        <Text style={Styles.titleItem}>Ep. {item.id + 1}</Text>
+                        <Text style={{fontSize: 12}}>
+                          {(date += date + item.id)} May 2019
+                        </Text>
+                      </View>
+                    </CardItem>
+                  </TouchableOpacity>
                 </Card>
               );
             }}
