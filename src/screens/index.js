@@ -11,7 +11,7 @@ import LoginScreen from './Login';
 import AuthLoadingScreen from './AuthLoading';
 import Details from './Details';
 import DetailEpisode from './DetailEpisode';
-import EditProfile from './EditProfile';
+import EditProfile from './Profile/EditProfile';
 
 const AuthStack = createStackNavigator({
   Login: {
