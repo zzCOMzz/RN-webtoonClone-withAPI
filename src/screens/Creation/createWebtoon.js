@@ -37,7 +37,10 @@ export default class CreateWebtoon extends Component {
               let date = item.id + 1;
               return (
                 <Card key={item.id}>
-                  <TouchableOpacity onPress={()=> this.props.navigation.navigate("EditEpisode")}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('EditWebtoon')
+                    }>
                     <CardItem>
                       <Image source={{uri: item.url}} style={Styles.image} />
                       <View style={{marginLeft: 15}}>

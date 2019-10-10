@@ -16,7 +16,7 @@ import EditProfile from './Profile/EditProfile';
 import CreationScreen from './Creation';
 import CreateWebtoon from './Creation/createWebtoon';
 import CreateWebtoonEpisode from './Creation/createEpisode';
-import EditEpisode from './Creation/editEpisode';
+import EditWebtoon from './Creation/editWebtoon';
 
 const AuthStack = createStackNavigator({
   Login: {
@@ -85,8 +85,8 @@ const AppStack = createStackNavigator(
         ),
       },
     },
-    EditEpisode: {
-      screen: EditEpisode,
+    EditWebtoon: {
+      screen: EditWebtoon,
       navigationOptions: {
         headerTitle: <Header titleText="Edit Webtoon" />,
         headerRight: (
