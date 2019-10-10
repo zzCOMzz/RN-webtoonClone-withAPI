@@ -2,10 +2,13 @@ import React from 'react';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 
+//? Import Component
+import Header from 'components/header';
+import ButtonShare from 'components/buttonShare';
+//? Import Screens
 import BottomTabStack from './bottomTab';
 import LoginScreen from './Login';
 import AuthLoadingScreen from './AuthLoading';
-
 import Details from './Details';
 
 const AuthStack = createStackNavigator({
@@ -28,7 +31,8 @@ const AppStack = createStackNavigator(
     Details: {
       screen: Details,
       navigationOptions: {
-        headerTitle: 'Details',
+        headerTitle: <Header />,
+        headerRight: <ButtonShare />,
       },
     },
   },

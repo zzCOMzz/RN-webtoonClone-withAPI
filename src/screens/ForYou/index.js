@@ -6,6 +6,7 @@ import {
   Image,
   ScrollView,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import Slideshow from 'react-native-image-slider-show';
 import {Input, Card, CardItem, Item, Icon, Button} from 'native-base';
@@ -65,16 +66,18 @@ class ScreenForYou extends React.Component {
                 data={dataImage}
                 renderItem={({item}) => (
                   <Card>
-                    <CardItem
+                    <TouchableOpacity
                       onPress={() => this.props.navigation.navigate('Details')}>
-                      <Image
-                        source={{uri: item.url}}
-                        style={{height: 100, width: 100}}
-                      />
-                    </CardItem>
-                    <View style={{alignItems: 'center', marginBottom: 5}}>
-                      <Text style={{fontSize: 14}}>{item.title}</Text>
-                    </View>
+                      <CardItem>
+                        <Image
+                          source={{uri: item.url}}
+                          style={{height: 100, width: 100}}
+                        />
+                      </CardItem>
+                      <View style={{alignItems: 'center', marginBottom: 5}}>
+                        <Text style={{fontSize: 14}}>{item.title}</Text>
+                      </View>
+                    </TouchableOpacity>
                   </Card>
                 )}
                 keyExtractor={item => item.id}
@@ -88,25 +91,26 @@ class ScreenForYou extends React.Component {
             <View>
               {dataImage.map(item => {
                 return (
-                  <Card key={item.id}>
-                    <CardItem>
-                      <Image
-                        source={{uri: item.url}}
-                        style={{height: 100, width: 100}}
-                      />
-                      <View style={{marginLeft: 15}}>
-                        <Text style={{fontSize: 16}}>{item.title}</Text>
-                        <Button
-                          onPress={() =>
-                            this.props.navigation.navigate('Details')
-                          }
-                          warning
-                          style={Styles.btnFavour}>
-                          <Text>+ Favourite</Text>
-                        </Button>
-                      </View>
-                    </CardItem>
-                  </Card>
+                  <TouchableOpacity
+                    onPress={() => this.props.navigation.navigate('Details')}>
+                    <Card key={item.id}>
+                      <CardItem>
+                        <Image
+                          source={{uri: item.url}}
+                          style={{height: 100, width: 100}}
+                        />
+                        <View style={{marginLeft: 15}}>
+                          <Text style={{fontSize: 16}}>{item.title}</Text>
+                          <Button
+                            onPress={() => alert('he')}
+                            warning
+                            style={Styles.btnFavour}>
+                            <Text>+ Favourite</Text>
+                          </Button>
+                        </View>
+                      </CardItem>
+                    </Card>
+                  </TouchableOpacity>
                 );
               })}
             </View>
