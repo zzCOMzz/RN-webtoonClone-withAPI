@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import {Header, Left, Item, Input, Icon} from 'native-base';
-
+import {Left, Item, Input, Icon} from 'native-base';
+import HeaderProfile from 'components/headerProfile';
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
@@ -20,18 +20,11 @@ class ProfileScreen extends Component {
     const {imageProfile, isEditProfile, nameProfile} = this.state;
     return (
       <View>
-        <View style={Styles.headerContainer}>
-          <View style={Styles.header}>
-            <View style={Styles.textHeader}>
-              <Text style={Styles.textProf}>Profile</Text>
-            </View>
-            <View style={{marginTop: 17, marginRight: 30}}>
-              <TouchableOpacity onPress={() => this.handleEdit()}>
-                <Icon name="create" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+        <HeaderProfile
+          handleFunc={() => this.props.navigation.navigate('EditProfile')}
+          title="Profile"
+          icon="create"
+        />
         <View style={{alignItems: 'center', marginTop: '10%'}}>
           <View style={Styles.imageProf}>
             <Image

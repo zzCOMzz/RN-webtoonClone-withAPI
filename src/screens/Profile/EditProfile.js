@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {Header, Left, Item, Input, Icon} from 'native-base';
 import ImagePicker from 'react-native-image-picker';
+import HeaderProfile from 'components/headerProfile';
 class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
@@ -35,8 +36,8 @@ class EditProfileScreen extends Component {
       } else if (res.customButton) {
         console.log(res.customButton);
       } else {
-        const sourceImage = {uri: res.uri};
-
+        const sourceImage = res.uri;
+        console.log('source', sourceImage);
         this.setState({imageProfile: sourceImage});
       }
     });
@@ -45,22 +46,15 @@ class EditProfileScreen extends Component {
     const {imageProfile, isEditProfile, nameProfile} = this.state;
     return (
       <View>
-        <View style={Styles.headerContainer}>
-          <View style={Styles.header}>
-            <View style={Styles.headerText}>
-              <Text style={Styles.textPorf}>Edit Profile</Text>
-            </View>
-            <View style={Styles.iconContainer}>
-              <TouchableOpacity onPress={() => this.handleEdit()}>
-                <Icon name="checkmark" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+        <HeaderProfile
+          handleFunc={() => this.props.navigation.navigate('Profile')}
+          title="Edit Profile"
+          icon="checkmark"
+        />
         <View style={Styles.imageContainer}>
           <View style={Styles.imgStyle}>
             <Image
-              style={{height: 150, width: 150}}
+              style={{height: 150, width: 150, borderRadius: 100}}
               source={{
                 uri: imageProfile,
               }}
