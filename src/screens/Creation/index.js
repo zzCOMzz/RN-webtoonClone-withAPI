@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
 
-import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {Item, Input, Icon, Card, CardItem, Button, Fab} from 'native-base';
 import {initLoginState} from 'reducers';
 export default class Creation extends Component {
@@ -22,15 +29,20 @@ export default class Creation extends Component {
             renderItem={({item}) => {
               return (
                 <Card key={item.id}>
-                  <CardItem>
-                    <Image source={{uri: item.url}} style={Styles.image} />
-                    <View style={{marginLeft: 15}}>
-                      <Text style={Styles.titleItem}>{item.title}</Text>
-                      <Text style={{fontSize: 15}}>
-                        {Math.floor(Math.random() * 99)} Episode(s)
-                      </Text>
-                    </View>
-                  </CardItem>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('EditWebtoon')
+                    }>
+                    <CardItem>
+                      <Image source={{uri: item.url}} style={Styles.image} />
+                      <View style={{marginLeft: 15}}>
+                        <Text style={Styles.titleItem}>{item.title}</Text>
+                        <Text style={{fontSize: 15}}>
+                          {Math.floor(Math.random() * 99)} Episode(s)
+                        </Text>
+                      </View>
+                    </CardItem>
+                  </TouchableOpacity>
                 </Card>
               );
             }}
