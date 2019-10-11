@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, Text, AsyncStorage} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import {appReducer, initLoginState} from 'reducers';
 const AuthLoadingScreen = props => {
   useEffect(() => {
@@ -9,8 +9,18 @@ const AuthLoadingScreen = props => {
     }, 1200);
   });
   return (
-    <View>
-      <Text>Loading Screen he</Text>
+    <View style={{flex: 1}}>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: '30%',
+        }}>
+        <Image
+          style={{width: 200, height: 200}}
+          source={require('../../Assets/webtoon-logo.png')}
+        />
+      </View>
     </View>
   );
 };

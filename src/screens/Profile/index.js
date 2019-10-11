@@ -2,13 +2,15 @@ import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {Left, Item, Input, Icon} from 'native-base';
 import HeaderProfile from 'components/headerProfile';
+
+import {initLoginState} from 'reducers';
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       imageProfile: 'https://static.thenounproject.com/png/994628-200.png',
       isEditProfile: false,
-      nameProfile: 'Your Name',
+      nameProfile: JSON.parse(initLoginState.userData).email,
     };
   }
 
@@ -45,7 +47,12 @@ class ProfileScreen extends Component {
             </View>
           </TouchableOpacity>
           <View style={Styles.logoutBtn}>
-            <Text style={{fontSize: 25}}>Log Out</Text>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('Auth');
+              }}>
+              <Text style={{fontSize: 25}}>Log Out</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
