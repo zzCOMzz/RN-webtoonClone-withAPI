@@ -27,6 +27,9 @@
 
 ## Stack
 - Using React Native for the Mobile Frontend
+- Native Base for UI Library
+- React Navigation for Navigation
+- React Native Image Picker
 
 ## Prerequisites
 * Make sure You had been install NodeJs in your system https://nodejs.org/
