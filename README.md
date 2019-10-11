@@ -47,4 +47,5 @@ $ yarn android #for android
 
 ### License
 see [zzCOMzz License](LICENSE)
-<img src="./ss/LICENSE.V1.png" width="250" height="55">
+<p>
+<img src="./ss/LICENSE.V1.png" width="250" height="55"></p>
