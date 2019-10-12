@@ -31,7 +31,10 @@ export default class CreateEpisode extends Component {
       } else {
         const sourceImage = res.uri;
         this.setState({
-          dataImage: [...this.state.dataImage, {url: sourceImage, id: 5}],
+          dataImage: [
+            ...this.state.dataImage,
+            {url: sourceImage, id: new Date().getMilliseconds()},
+          ],
         });
       }
     });
