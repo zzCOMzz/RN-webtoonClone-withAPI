@@ -100,17 +100,9 @@ const Login = props => {
                   returnKeyType="send"
                 />
                 {visible ? (
-                  <Icon
-                    name="ios-eye-off"
-                    style={{color: 'blue'}}
-                    onPress={() => handleLook()}
-                  />
+                  <Icon name="ios-eye-off" onPress={() => handleLook()} />
                 ) : (
-                  <Icon
-                    name="ios-eye"
-                    style={{color: 'blue'}}
-                    onPress={() => handleLook()}
-                  />
+                  <Icon name="ios-eye" onPress={() => handleLook()} />
                 )}
               </Item>
             </Item>

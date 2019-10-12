@@ -40,7 +40,6 @@ class EditProfileScreen extends Component {
     });
   };
   render() {
-    console.log(this.props.navigation.getParam('name'), 'edit Profile');
     const {imageProfile, isEditProfile, nameProfile} = this.state;
     return (
       <View>
