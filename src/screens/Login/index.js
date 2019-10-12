@@ -37,6 +37,7 @@ const Login = props => {
       setIsValid(true);
     } else {
       setIsValid(false);
+      setBtnActive(true);
       setIsError(true);
     }
   };
