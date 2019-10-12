@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
 import {Item, Input, Icon, Card, CardItem, Button, Label} from 'native-base';
 import {initLoginState} from 'reducers';
+import ImagePicker from 'react-native-image-picker';
 export default class CreateEpisode extends Component {
   constructor(props) {
     super(props);
@@ -10,6 +11,31 @@ export default class CreateEpisode extends Component {
       dataImage: initLoginState.banners,
     };
   }
+
+  handleAddImage = () => {
+    const options = {
+      title: 'Select Photo',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, res => {
+      if (res.didCancel) {
+        alert('Add Image was Canceled');
+      } else if (res.error) {
+        console.log(res.error);
+        alert('Response Erorr');
+      } else if (res.customButton) {
+        console.log(res.customButton);
+      } else {
+        const sourceImage = res.uri;
+        this.setState({
+          dataImage: [...this.state.dataImage, {url: sourceImage, id: 5}],
+        });
+      }
+    });
+  };
 
   render() {
     const {dataImage} = this.state;
@@ -26,7 +52,7 @@ export default class CreateEpisode extends Component {
           <FlatList
             showsVerticalScrollIndicator={false}
             data={dataImage}
-            renderItem={({item}) => {
+            renderItem={({item}, idx) => {
               let date = item.id + 1;
               return (
                 <Card key={item.id}>
@@ -50,7 +76,9 @@ export default class CreateEpisode extends Component {
           />
         </View>
         <View style={{flex: 1, marginTop: 10}}>
-          <Button style={{justifyContent: 'center', backgroundColor: 'gray'}}>
+          <Button
+            style={{justifyContent: 'center', backgroundColor: 'gray'}}
+            onPress={this.handleAddImage}>
             <Text style={{color: 'white', fontSize: 20}}>+ Image</Text>
           </Button>
         </View>
