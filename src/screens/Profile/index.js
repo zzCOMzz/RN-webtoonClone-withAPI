@@ -23,7 +23,16 @@ class ProfileScreen extends Component {
     return (
       <View>
         <HeaderProfile
-          handleFunc={() => this.props.navigation.navigate('EditProfile')}
+          handleFunc={() =>
+            this.props.navigation.navigate('EditProfile', {
+              imageProfile: !this.props.navigation.getParam('image')
+                ? imageProfile
+                : this.props.navigation.getParam('image'),
+              name: !this.props.navigation.getParam('name')
+                ? nameProfile
+                : this.props.navigation.getParam('name'),
+            })
+          }
           title="Profile"
           icon="create"
         />
@@ -32,10 +41,16 @@ class ProfileScreen extends Component {
             <Image
               style={Styles.img}
               source={{
-                uri: imageProfile,
+                uri: !this.props.navigation.getParam('image')
+                  ? imageProfile
+                  : this.props.navigation.getParam('image'),
               }}
             />
-            <Text style={{fontSize: 30}}>{nameProfile}</Text>
+            <Text style={{fontSize: 30}}>
+              {!this.props.navigation.getParam('name')
+                ? nameProfile
+                : this.props.navigation.getParam('name')}
+            </Text>
           </View>
         </View>
         <View style={{marginTop: 40}}>
@@ -63,7 +78,7 @@ class ProfileScreen extends Component {
 const Styles = StyleSheet.create({
   textProf: {fontSize: 25, fontWeight: 'bold'},
   textHeader: {marginTop: 15, marginLeft: 35},
-  img: {height: 150, width: 150},
+  img: {height: 150, width: 150, borderRadius: 100},
   imageProf: {justifyContent: 'center', alignItems: 'center'},
   creation: {
     borderBottomWidth: 2,

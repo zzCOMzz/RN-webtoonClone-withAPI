@@ -3,19 +3,17 @@ import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {Header, Left, Item, Input, Icon} from 'native-base';
 import ImagePicker from 'react-native-image-picker';
 import HeaderProfile from 'components/headerProfile';
+
+import {initLoginState} from 'reducers';
 class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imageProfile: 'https://static.thenounproject.com/png/994628-200.png',
+      imageProfile: this.props.navigation.getParam('imageProfile'),
       isEditProfile: false,
-      nameProfile: 'Your Name',
+      nameProfile: this.props.navigation.getParam('name'),
     };
   }
-
-  handleEdit = () => {
-    this.props.navigation.navigate('Profile');
-  };
 
   handleEditPhoto = () => {
     const options = {
@@ -37,17 +35,25 @@ class EditProfileScreen extends Component {
         console.log(res.customButton);
       } else {
         const sourceImage = res.uri;
-        console.log('source', sourceImage);
         this.setState({imageProfile: sourceImage});
       }
     });
   };
   render() {
+    console.log(this.props.navigation.getParam('name'), 'edit Profile');
     const {imageProfile, isEditProfile, nameProfile} = this.state;
     return (
       <View>
         <HeaderProfile
-          handleFunc={() => this.props.navigation.navigate('Profile')}
+          handleFunc={() => {
+            this.props.navigation.navigate('Profile', {
+              image: this.state.imageProfile,
+              name:
+                nameProfile !== nameProfile
+                  ? this.props.navigation.getParam('name')
+                  : nameProfile,
+            });
+          }}
           title="Edit Profile"
           icon="checkmark"
         />
@@ -65,6 +71,11 @@ class EditProfileScreen extends Component {
             <Item style={{paddingHorizontal: 40}}>
               <Input
                 value={nameProfile}
+                placeholder={
+                  !this.props.navigation.getParam('name')
+                    ? nameProfile
+                    : this.props.navigation.getParam('name')
+                }
                 onChangeText={text => this.setState({nameProfile: text})}
               />
             </Item>
