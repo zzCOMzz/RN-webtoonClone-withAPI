@@ -15,11 +15,12 @@ export default class Creation extends Component {
     super(props);
     this.state = {
       dataImage: initLoginState.banners,
+      fabAction: false,
     };
   }
 
   render() {
-    const {dataImage} = this.state;
+    const {dataImage, fabAction} = this.state;
     return (
       <View style={{flex: 1, marginHorizontal: 10}}>
         <View style={{flex: 1}}>
@@ -49,13 +50,25 @@ export default class Creation extends Component {
             keyExtractor={item => item.id}
           />
         </View>
+
         <Fab
           direction="up"
+          active={fabAction}
           containerStyle={{}}
           style={{backgroundColor: 'orange'}}
           position="bottomRight"
-          onPress={() => this.props.navigation.navigate('CreationWebtoon')}>
-          <Icon name="add" />
+          onPress={() => this.setState({fabAction: !fabAction})}>
+          <Icon name={fabAction ? 'apps' : 'menu'} />
+          <Button
+            style={{backgroundColor: '#00FF42'}}
+            onPress={() => this.props.navigation.navigate('CreationWebtoon')}>
+            <Icon name="add" />
+          </Button>
+          <Button
+            style={{backgroundColor: '#FF1242'}}
+            onPress={() => this.props.navigation.navigate('Profile')}>
+            <Icon name="arrow-back" />
+          </Button>
         </Fab>
       </View>
     );

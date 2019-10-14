@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
+import {Icon} from 'native-base';
 
 class Header extends Component {
   constructor(props) {
@@ -7,7 +8,14 @@ class Header extends Component {
   }
   render() {
     return (
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+      <View
+        style={
+          ({
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          },
+          this.props.stylesHeader)
+        }>
         <Text style={{fontSize: 20}}>{this.props.titleText}</Text>
       </View>
     );
