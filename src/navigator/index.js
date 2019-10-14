@@ -8,16 +8,16 @@ import ButtonShare from 'components/buttonShare';
 import ButtonWithFunc from 'components/buttonFunc';
 //? Import Screens
 import BottomTabStack from './bottomTab';
-import LoginScreen from './Login';
-import AuthLoadingScreen from './AuthLoading';
-import Details from './Details';
-import DetailEpisode from './DetailEpisode';
-import EditProfile from './Profile/EditProfile';
-import CreationScreen from './Creation';
-import CreateWebtoon from './Creation/createWebtoon';
-import CreateWebtoonEpisode from './Creation/createEpisode';
-import EditWebtoon from './Creation/editWebtoon';
-import EditEpisode from './Creation/editEpisode';
+import LoginScreen from '../screens/Login';
+import AuthLoadingScreen from '../screens/AuthLoading';
+import Details from '../screens/Details';
+import DetailEpisode from '../screens/DetailEpisode';
+import EditProfile from '../screens/Profile/EditProfile';
+import CreationScreen from '../screens/Creation';
+import CreateWebtoon from '../screens/Creation/createWebtoon';
+import CreateWebtoonEpisode from '../screens/Creation/createEpisode';
+import EditWebtoon from '../screens/Creation/editWebtoon';
+import EditEpisode from '../screens/Creation/editEpisode';
 
 const AuthStack = createStackNavigator({
   Login: {

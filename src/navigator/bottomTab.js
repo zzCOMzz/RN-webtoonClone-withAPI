@@ -8,9 +8,9 @@ import Header from 'components/header';
 import ButtonShare from 'components/buttonShare';
 
 //? Import Screen
-import ForYouScreen from './ForYou';
-import FavouriteScreen from './Favourite';
-import ProfileScreen from './Profile';
+import ForYouScreen from '../screens/ForYou';
+import FavouriteScreen from '../screens/Favourite';
+import ProfileScreen from '../screens/Profile';
 import {createStackNavigator} from 'react-navigation-stack';
 
 const BottomTabStack = createMaterialBottomTabNavigator(

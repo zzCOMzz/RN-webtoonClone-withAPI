@@ -10,18 +10,18 @@
 - Let's Look at The Screenshot
   
 <p float="left">
-  <img src="./ss/login.png" width="200" height="350" alt="login page"
+  <img src="./src/Assets/ss/login.png" width="200" height="350" alt="login page"
   alt="login screen">
-  <img src="./ss/home.png" width="200" height="350"
+  <img src="./src/Assets/ss/home.png" width="200" height="350"
   alt="home screen" >
-  <img src="./ss/webtoon.png" width="200" height="350" 
+  <img src="./src/Assets/ss/webtoon.png" width="200" height="350" 
   alt="webtoon screen">
-  <img src="./ss/favourite.png" width="200" height="350" 
+  <img src="./src/Assets/ss/favourite.png" width="200" height="350" 
   alt="favourite screen">
-  <img src="./ss/profile.png" width="200" height="350" alt="profile screen">
-  <img src="./ss/mywebtoon.png" width="200" height="350" alt="my webtoon screen">
-  <img src="./ss/editwebtoon.png" width="200" height="350" alt="Edit webtoom screen">
-  <img src="./ss/addimage.png" width="200" height="350" alt="add webtoom screen">
+  <img src="./src/Assets/ss/profile.png" width="200" height="350" alt="profile screen">
+  <img src="./src/Assets/ss/mywebtoon.png" width="200" height="350" alt="my webtoon screen">
+  <img src="./src/Assets/ss/editwebtoon.png" width="200" height="350" alt="Edit webtoom screen">
+  <img src="./src/Assets/ss/addimage.png" width="200" height="350" alt="add webtoom screen">
 </p>
 
 
@@ -55,4 +55,4 @@ $ yarn android #for android
 ### License
 see [zzCOMzz License](LICENSE)
 <p>
-<img src="./ss/LICENSE.V1.png" width="250" height="55"></p>
+<img src="./src/Assets/ss/LICENSE.V1.png" width="250" height="55"></p>
