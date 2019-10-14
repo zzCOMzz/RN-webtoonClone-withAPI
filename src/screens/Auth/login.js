@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   Image,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import {Text, Input, Label, Button, Item, Form, Icon} from 'native-base';
 import {appReducer, initLoginState} from 'reducers';
@@ -133,6 +134,19 @@ const Login = props => {
                   Log In
                 </Text>
               </Button>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+                flexDirection: 'row',
+                marginTop: '5%',
+              }}>
+              <Text style={{color: 'grey'}}>Don't Have an Account? </Text>
+              <TouchableOpacity
+                style={{borderRadius: 6}}
+                onPress={() => props.navigation.navigate('Register')}>
+                <Text style={{fontWeight: 'bold'}}> Sign Up</Text>
+              </TouchableOpacity>
             </View>
           </Form>
         </View>

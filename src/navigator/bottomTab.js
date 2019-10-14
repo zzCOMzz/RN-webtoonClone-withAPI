@@ -51,7 +51,7 @@ const BottomTabStack = createMaterialBottomTabNavigator(
   },
   {
     initialRouteName: 'Home',
-    activeColor: '#74E91D',
+    activeColor: '#5F2',
     inactiveColor: 'grey',
     barStyle: {
       backgroundColor: 'white',

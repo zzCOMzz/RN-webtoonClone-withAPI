@@ -9,16 +9,22 @@ import ButtonWithFunc from 'components/buttonFunc';
 
 //? Import Screens
 import BottomTabStack from './bottomTab';
-import LoginScreen from '../screens/Login';
+import LoginScreen from '../screens/Auth/login';
+import RegisterScreen from '../screens/Auth/register';
 import AuthLoadingScreen from '../screens/AuthLoading';
 import Details from '../screens/Details';
 import DetailEpisode from '../screens/DetailEpisode';
 import EditProfile from '../screens/Profile/EditProfile';
-import CreationScreen from '../screens/Creation';
 
-import CreatorScreen from './creator';
+import CreatorStack from './creator';
 
 const AuthStack = createStackNavigator({
+  Register: {
+    screen: RegisterScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
   Login: {
     screen: LoginScreen,
     navigationOptions: {
@@ -56,7 +62,7 @@ const AppStack = createStackNavigator(
       },
     },
     Creator: {
-      screen: CreatorScreen,
+      screen: CreatorStack,
       navigationOptions: {
         header: null,
       },
@@ -73,7 +79,7 @@ export default createAppContainer(
       Auth: AuthStack,
     },
     {
-      initialRouteName: 'App',
+      initialRouteName: 'Auth',
     },
   ),
 );

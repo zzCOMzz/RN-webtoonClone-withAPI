@@ -10,7 +10,7 @@ class ProfileScreen extends Component {
     this.state = {
       imageProfile: 'https://static.thenounproject.com/png/994628-200.png',
       isEditProfile: false,
-      nameProfile: JSON.parse(initLoginState.userData).email,
+      nameProfile: 'JSON.parse(initLoginState.userData).email',
     };
   }
 
