@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Alert,
   Keyboard,
+  AsyncStorage,
 } from 'react-native';
 
 import {
@@ -84,13 +85,7 @@ class Register extends React.Component {
         .then(res => {
           const {data} = res;
           if (data.success) {
-            Alert.alert(`${data.message}`, 'Create Account Successfuly', [
-              {
-                text: 'Login',
-                onPress: () => this.props.navigation.navigate('Login'),
-              },
-            ]);
-            this.setState({isLoading: false});
+            return this.handleLogin();
           } else {
             Alert.alert(`${data.message}`, 'Create Account Failed', [
               {
@@ -115,6 +110,41 @@ class Register extends React.Component {
       ]);
       console.log(Host);
     }
+  };
+
+  handleLogin = () => {
+    const {email, password} = this.state;
+    axios({
+      method: 'POST',
+      url: `${Host}/auth/login`,
+      data: {
+        email,
+        password,
+      },
+    })
+      .then(res => {
+        const {data} = res;
+        if (data.success) {
+          AsyncStorage.setItem('token', data.token);
+
+          return this.props.navigation.navigate('AuthLoading');
+        } else {
+          Alert.alert(`${data.message}`, 'Back to Login', [
+            {
+              text: 'Try Again',
+              onPress: () => this.props.navigation.navigate('Login'),
+            },
+          ]);
+          this.setState({isLoading: false, isEmailValid: false});
+        }
+      })
+      .catch(err => {
+        Alert.alert(`${err}`, 'Can not get data from Server', [
+          {text: 'Try Again', onPress: () => console.log('Ok')},
+        ]);
+        this.setState({isLoading: false, isEmailValid: false});
+        console.log('Error :', err);
+      });
   };
   render() {
     const {
@@ -142,94 +172,104 @@ class Register extends React.Component {
         <KeyboardAvoidingView behavior="position">
           <View style={{marginTop: '20%'}}>
             {isLoading ? (
-              <Spinner />
+              <Spinner size="large" color="green" />
             ) : (
-              <Form>
-                <Card>
-                  <CardItem>
-                    <Item floatingLabel>
-                      <Label>Username</Label>
-                      <Input
-                        value={username}
-                        onChangeText={text => this.setState({username: text})}
-                        returnKeyType="next"
-                      />
-                    </Item>
-                  </CardItem>
-                  <CardItem>
-                    <Item floatingLabel>
-                      <Label>Email</Label>
-                      <Input
-                        value={email}
-                        style={isEmailValid ? {color: 'black'} : {color: 'red'}}
-                        onChangeText={text => this.handleEmail(text)}
-                        textContentType="emailAddress"
-                        returnKeyType="next"
-                      />
-                    </Item>
-                  </CardItem>
-                  <CardItem>
-                    <Item floatingLabel>
-                      <Label
-                        style={
-                          textPassValid === 'Weak'
-                            ? {color: 'red'}
-                            : textPassValid === 'Strong'
-                            ? {color: 'green'}
-                            : {color: 'grey'}
-                        }>
-                        {textPassValid}
-                      </Label>
-                      <Input
-                        value={password}
-                        onChangeText={text => this.handlePassword(text)}
-                        returnKeyType="done"
-                        secureTextEntry={isVisible}
-                      />
-                      {isVisible ? (
-                        <Icon
-                          name="ios-eye-off"
-                          onPress={() => this.setState({isVisible: !isVisible})}
+              <View>
+                <Form>
+                  <Card>
+                    <CardItem>
+                      <Item floatingLabel>
+                        <Label>Username</Label>
+                        <Input
+                          value={username}
+                          onChangeText={text => this.setState({username: text})}
+                          returnKeyType="next"
                         />
-                      ) : (
-                        <Icon
-                          name="ios-eye"
-                          onPress={() => this.setState({isVisible: !isVisible})}
+                      </Item>
+                    </CardItem>
+                    <CardItem>
+                      <Item floatingLabel>
+                        <Label>Email</Label>
+                        <Input
+                          value={email}
+                          style={
+                            isEmailValid ? {color: 'black'} : {color: 'red'}
+                          }
+                          onChangeText={text => this.handleEmail(text)}
+                          textContentType="emailAddress"
+                          returnKeyType="next"
                         />
-                      )}
-                    </Item>
-                  </CardItem>
-                  <TouchableOpacity onPress={() => this.handleSubmit()}>
-                    <View
-                      style={{
-                        justifyContent: 'center',
-                        flexDirection: 'row',
-                        marginBottom: '5%',
-                        marginTop: '2%',
-                      }}>
-                      <Text style={{fontSize: 23, fontStyle: 'italic'}}>
-                        Register
-                      </Text>
-                    </View>
+                      </Item>
+                    </CardItem>
+                    <CardItem>
+                      <Item floatingLabel>
+                        <Label
+                          style={
+                            textPassValid === 'Weak'
+                              ? {color: 'red'}
+                              : textPassValid === 'Strong'
+                              ? {color: 'green'}
+                              : {color: 'grey'}
+                          }>
+                          {textPassValid}
+                        </Label>
+                        <Input
+                          value={password}
+                          onChangeText={text => this.handlePassword(text)}
+                          returnKeyType="done"
+                          secureTextEntry={isVisible}
+                        />
+                        {isVisible ? (
+                          <Icon
+                            name="ios-eye-off"
+                            onPress={() =>
+                              this.setState({isVisible: !isVisible})
+                            }
+                          />
+                        ) : (
+                          <Icon
+                            name="ios-eye"
+                            onPress={() =>
+                              this.setState({isVisible: !isVisible})
+                            }
+                          />
+                        )}
+                      </Item>
+                    </CardItem>
+                    <TouchableOpacity onPress={() => this.handleSubmit()}>
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          flexDirection: 'row',
+                          marginBottom: '5%',
+                          marginTop: '2%',
+                        }}>
+                        <Text style={{fontSize: 23, fontStyle: 'italic'}}>
+                          Register
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </Card>
+                </Form>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    marginTop: '5%',
+                  }}>
+                  <Text style={{color: 'grey', fontSize: 17}}>
+                    Already have an account?{' '}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => this.props.navigation.navigate('Login')}>
+                    <Text style={{fontWeight: 'bold', fontSize: 17}}>
+                      {' '}
+                      Sign In
+                    </Text>
                   </TouchableOpacity>
-                </Card>
-              </Form>
+                </View>
+              </View>
             )}
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginTop: '5%',
-              }}>
-              <Text style={{color: 'grey', fontSize: 17}}>
-                Already have an account?{' '}
-              </Text>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('Login')}>
-                <Text style={{fontWeight: 'bold', fontSize: 17}}> Sign In</Text>
-              </TouchableOpacity>
-            </View>
           </View>
         </KeyboardAvoidingView>
       </View>
