@@ -52,9 +52,14 @@ exports.login = async (req, res, next) => {
       let token = jwt.sign(email, secret);
       bcrypt.compare(password, user.password).then(match => {
         if (match)
-          return res
-            .status(200)
-            .json({success: true, message: 'login successfully', token});
+          return res.status(200).json({
+            success: true,
+            message: 'login successfully',
+            token,
+            username: user.username,
+            idUser: user._id,
+            isCreator: user.is_creator.my_webtoon,
+          });
 
         return res.json({
           success: false,
