@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-import AppStack from 'screens';
+import AppStack from 'navigator';
 
 const App = () => {
   return (
