@@ -19,14 +19,14 @@ import EditProfile from '../screens/Profile/EditProfile';
 import CreatorStack from './creator';
 
 const AuthStack = createStackNavigator({
-  Register: {
-    screen: RegisterScreen,
+  Login: {
+    screen: LoginScreen,
     navigationOptions: {
       header: null,
     },
   },
-  Login: {
-    screen: LoginScreen,
+  Register: {
+    screen: RegisterScreen,
     navigationOptions: {
       header: null,
     },

@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
 import {View, Text, Image} from 'react-native';
 import {appReducer, initLoginState} from 'reducers';
+import {Spinner} from 'native-base';
 const AuthLoadingScreen = props => {
   useEffect(() => {
     const isUserExist = initLoginState.isLogin;
     setTimeout(() => {
-      props.navigation.navigate(isUserExist ? 'App' : 'Auth');
+      props.navigation.navigate(isUserExist ? 'App' : 'Login');
     }, 1200);
   });
   return (
@@ -20,6 +21,9 @@ const AuthLoadingScreen = props => {
           style={{width: 200, height: 200}}
           source={require('../../Assets/webtoon-logo.png')}
         />
+      </View>
+      <View>
+        <Spinner color="blue" size="large" />
       </View>
     </View>
   );
