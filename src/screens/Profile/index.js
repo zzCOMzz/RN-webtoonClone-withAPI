@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  AsyncStorage,
+} from 'react-native';
 import {Left, Item, Input, Icon} from 'native-base';
 import HeaderProfile from 'components/headerProfile';
 
@@ -64,6 +71,7 @@ class ProfileScreen extends Component {
           <View style={Styles.logoutBtn}>
             <TouchableOpacity
               onPress={() => {
+                AsyncStorage.clear();
                 this.props.navigation.navigate('Auth');
               }}>
               <Text style={{fontSize: 25}}>Log Out</Text>

@@ -1,10 +1,14 @@
 import React, {useEffect} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, AsyncStorage} from 'react-native';
+
 import {appReducer, initLoginState} from 'reducers';
 import {Spinner} from 'native-base';
 const AuthLoadingScreen = props => {
   useEffect(() => {
-    const isUserExist = initLoginState.isLogin;
+    AsyncStorage.getItem('token').then(token => {
+      console.log('Ini token Asli ', token);
+    });
+    const isUserExist = AsyncStorage.getItem('token');
     setTimeout(() => {
       props.navigation.navigate(isUserExist ? 'App' : 'Login');
     }, 1200);

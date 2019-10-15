@@ -75,14 +75,9 @@ class Login extends React.Component {
           const {data} = res;
           console.log(data);
           if (data.success) {
-            AsyncStorage.setItem('@token', data.token);
-            Alert.alert(`${data.message}`, '', [
-              {
-                text: 'Login',
-                onPress: () => this.props.navigation.navigate('AuthLoading'),
-              },
-            ]);
+            AsyncStorage.setItem('token', data.token);
             this.setState({isLoading: false});
+            return this.props.navigation.navigate('AuthLoading');
           } else {
             Alert.alert(`${data.message}`, '', [
               {text: 'Try Again', onPress: () => console.log('ok')},
@@ -90,7 +85,13 @@ class Login extends React.Component {
             this.setState({isLoading: false, isEmailValid: false});
           }
         })
-        .catch(err => console.log('Error :', err));
+        .catch(err => {
+          Alert.alert(`${err}`, 'Can not get data from Server', [
+            {text: 'Try Again', onPress: () => console.log('Ok')},
+          ]);
+          this.setState({isLoading: false, isEmailValid: false});
+          console.log('Error :', err);
+        });
     } else {
       Alert.alert('Data Not Valid', 'Please, Complete the Form Correctly', [
         {
@@ -173,22 +174,23 @@ class Login extends React.Component {
                       </Text>
                     </View>
                   </TouchableOpacity>
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      marginTop: '5%',
+                    }}>
+                    <Text style={{color: 'grey'}}>Don't Have an Account </Text>
+                    <TouchableOpacity
+                      style={{borderRadius: 6}}
+                      onPress={() =>
+                        this.props.navigation.navigate('Register')
+                      }>
+                      <Text style={{fontWeight: 'bold'}}> Sign Up</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               )}
-
-              <View
-                style={{
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  marginTop: '5%',
-                }}>
-                <Text style={{color: 'grey'}}>Don't Have an Account </Text>
-                <TouchableOpacity
-                  style={{borderRadius: 6}}
-                  onPress={() => this.props.navigation.navigate('Register')}>
-                  <Text style={{fontWeight: 'bold'}}> Sign Up</Text>
-                </TouchableOpacity>
-              </View>
             </Form>
           </View>
         </KeyboardAvoidingView>

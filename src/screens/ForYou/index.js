@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
 import Slideshow from 'react-native-image-slider-show';
 import {Input, Card, CardItem, Item, Icon, Button} from 'native-base';
@@ -37,6 +38,7 @@ class ScreenForYou extends React.Component {
 
   render() {
     const {dataImage, position} = this.state;
+
     return (
       <View style={{marginHorizontal: 10}}>
         <Item rounded style={Styles.searchInput}>
