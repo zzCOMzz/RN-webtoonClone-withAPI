@@ -5,13 +5,12 @@ const mkdirp = require('mkdirp');
 
 exports.showAllWebtoon = (req, res, next) => {
   try {
-    Webtoon.find({}, (err, webtoons) => {
-      let webtoonMap = {};
-      webtoons.forEach(webtoon => {
-        webtoonMap[webtoon._id] = webtoon;
+    Webtoon.find()
+      .populate('creator', 'username _id')
+      .exec((err, webtoons) => {
+        if (err) return res.json({success: false, message: 'Not Found!'});
+        return res.json({success: true, data: webtoons});
       });
-      res.json({data: webtoonMap});
-    });
   } catch (error) {
     console.log(error);
   }
@@ -116,8 +115,7 @@ exports.getEpisode = (req, res, next) => {
     //   if (err) return res.json({message: 'Episode Not Found', success: false});
     //   return res.json({data: episode});
     // });
-    Episode.find({episode_id: webtoonId})
-    .exec((err, episode) => {
+    Episode.find({episode_id: webtoonId}).exec((err, episode) => {
       if (err) return res.json({message: 'Episode Not Found', success: false});
       return res.json({data: episode});
     });

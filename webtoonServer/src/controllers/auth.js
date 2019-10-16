@@ -40,7 +40,7 @@ exports.register = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
   const password = req.body.password;
   try {
     await User.findOne({email}).then(user => {
