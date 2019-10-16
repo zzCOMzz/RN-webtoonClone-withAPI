@@ -1,5 +1,6 @@
 const Webtoon = require('../models/webtoon');
 const User = require('../models/user');
+const Episode = require('../models/episode');
 const mkdirp = require('mkdirp');
 
 exports.showAllWebtoon = (req, res, next) => {
@@ -72,6 +73,53 @@ exports.getMyWebtoon = (req, res, next) => {
       });
 
       res.json({data: webtoonMap});
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.addEpisode = (req, res, next) => {
+  const userId = req.params.iduser;
+  const webtoonId = req.params.webtoonid;
+  const titleEpisode = req.query.episodetitle;
+  const cover = req.coverUri;
+  try {
+    Webtoon.findOne({_id: webtoonId, creator: userId}, (err, webtoon) => {
+      if (err) return res.json({message: 'Webtoon Not Found!', success: false});
+
+      const addEpisode = new Episode({
+        title: titleEpisode,
+        image_cover: cover,
+        episode_id: webtoon,
+      });
+
+      addEpisode.save({}, (err, episode) => {
+        if (err)
+          return res.json({
+            success: false,
+            message: 'Failed on Create Episode',
+          });
+        return res.json({success: true, data: episode});
+      });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.getEpisode = (req, res, next) => {
+  const userId = req.params.iduser;
+  const webtoonId = req.params.webtoonid;
+  try {
+    // Episode.find({episode_id: webtoonId}, (err, episode) => {
+    //   if (err) return res.json({message: 'Episode Not Found', success: false});
+    //   return res.json({data: episode});
+    // });
+    Episode.find({episode_id: webtoonId})
+    .exec((err, episode) => {
+      if (err) return res.json({message: 'Episode Not Found', success: false});
+      return res.json({data: episode});
     });
   } catch (error) {
     console.log(error);

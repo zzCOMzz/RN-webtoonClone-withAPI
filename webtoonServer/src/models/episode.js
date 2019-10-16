@@ -6,7 +6,10 @@ const EpisodeSchema = new Schema({
     type: String,
     required: true,
   },
-
+  image_cover: {
+    type: String,
+    required: true,
+  },
   episode_id: {
     type: Schema.Types.ObjectId,
     ref: 'Webtoon',

@@ -8,8 +8,13 @@ const {
   storage,
   Multer,
   addImageBannerWebtoon,
+  addEpisodeCover,
 } = require('../middlewares/multer');
-const {mkdirCreator, mkdirWebtoon} = require('../middlewares/mkdir');
+const {
+  mkdirCreator,
+  mkdirWebtoon,
+  mkdirEpisode,
+} = require('../middlewares/mkdir');
 
 const upload = Multer({storage});
 
@@ -30,7 +35,8 @@ router.post(
 
 //? Create My Webtoon (21)
 const uploadBanner = Multer({storage: addImageBannerWebtoon});
-//? use query.folder for naming folder
+//? use query.webtoontitle for naming folder
+//! http://localhost:3001/api/v1/user/5da6e9016c4e765927d33f62/webtoon?webtoontitle=webtoon
 router.post(
   '/:iduser/webtoon',
   checkToken,
@@ -39,6 +45,25 @@ router.post(
   WebtoonControllers.addWebtoon,
 );
 
+//! http://localhost:3001/api/v1/user/5da6e9016c4e765927d33f62/webtoon/
 router.get('/:iduser/webtoon', checkToken, WebtoonControllers.getMyWebtoon);
 
+//! http://localhost:3001/api/v1/user/5da6e9016c4e765927d33f62/webtoon/{webtoonid}/episodes
+router.get('/:iduser/webtoon/:webtoonid/episodes');
+
+//! http://localhost:3001/api/v1/user/5da6e9016c4e765927d33f62/webtoon/{webtoonid}/episode?webtoontitle=""&episodetitle=""
+const uploadCoverEpisode = Multer({storage: addEpisodeCover});
+router.post(
+  '/:iduser/webtoon/:webtoonid/episode',
+  checkToken,
+  mkdirEpisode,
+  uploadCoverEpisode.single('cover'),
+  WebtoonControllers.addEpisode,
+);
+
+router.get(
+  '/:iduser/webtoon/:webtoonid/episode',
+  checkToken,
+  WebtoonControllers.getEpisode,
+);
 module.exports = router;

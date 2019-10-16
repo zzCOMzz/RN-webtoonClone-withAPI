@@ -38,16 +38,53 @@ exports.addImageBannerWebtoon = Multer.diskStorage({
     ) {
       cb(true, '');
     } else {
-      cb(null, `storage/uploads/${req.params.iduser}/${req.query.folder}`);
+      cb(
+        null,
+        `storage/uploads/${req.params.iduser}/${req.query.webtoontitle}`,
+      );
     }
   },
   filename: (req, file, cb) => {
-    req.bannerurl = `/images/${req.params.iduser}/${req.query.folder}/${
-      req.query.folder
-    }-${new Date().getSeconds()}${path.extname(file.originalname)}`;
+    req.bannerurl = `/images/${req.params.iduser}/${req.query.webtoontitle}/${
+      req.query.webtoontitle
+    }-${new Date().getSeconds()}-webtoon-${path.extname(file.originalname)}`;
     cb(
       null,
-      `${req.query.folder}-${new Date().getSeconds()}${path.extname(
+      `${
+        req.query.webtoontitle
+      }-${new Date().getSeconds()}-webtoon-${path.extname(file.originalname)}`,
+    );
+  },
+});
+
+exports.addEpisodeCover = Multer.diskStorage({
+  destination: (req, file, cb) => {
+    if (
+      file.mimetype !== 'image/png' &&
+      file.mimetype !== 'image/jpg' &&
+      file.mimetype !== 'image/jpeg'
+    ) {
+      cb(true, '');
+    } else {
+      cb(
+        null,
+        `storage/uploads/${req.params.iduser}/${req.query.webtoontitle}/${req.query.episodetitle}`,
+      );
+    }
+  },
+  filename: (req, file, cb) => {
+    req.coverUri = `/images/${req.params.iduser}/${req.query.webtoontitle}/${
+      req.query.episodetitle
+    }/${req.query.webtoontitle}-${
+      req.query.episodetitle
+    }-${new Date().getSeconds()}-coverEpisode-${path.extname(
+      file.originalname,
+    )}`;
+    cb(
+      null,
+      `${req.query.webtoontitle}-${
+        req.query.episodetitle
+      }-${new Date().getSeconds()}-coverEpisode-${path.extname(
         file.originalname,
       )}`,
     );
