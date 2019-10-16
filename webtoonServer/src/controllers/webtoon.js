@@ -61,3 +61,19 @@ exports.addWebtoon = (req, res, next) => {
     console.log(err);
   }
 };
+
+exports.getMyWebtoon = (req, res, next) => {
+  const userId = req.params.iduser;
+  try {
+    Webtoon.find({creator: userId}, (err, webtoons) => {
+      let webtoonMap = {};
+      webtoons.forEach(webtoon => {
+        webtoonMap[webtoon._id] = webtoon;
+      });
+
+      res.json({data: webtoonMap});
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

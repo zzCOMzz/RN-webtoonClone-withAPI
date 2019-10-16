@@ -39,4 +39,6 @@ router.post(
   WebtoonControllers.addWebtoon,
 );
 
+router.get('/:iduser/webtoon', checkToken, WebtoonControllers.getMyWebtoon);
+
 module.exports = router;
