@@ -5,15 +5,16 @@ const User = require('../models/user');
 
 exports.register = async (req, res, next) => {
   const username = req.body.username;
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
   const password = req.body.password;
+
   try {
     await User.findOne({email}, (err, user) => {
       if (err) console.log(err);
       if (user)
         return res.json({
           success: false,
-          message: 'email are already in use',
+          message: 'Email are Already in Use',
         });
 
       return bcrypt
@@ -29,7 +30,7 @@ exports.register = async (req, res, next) => {
         .then(_ => {
           res.status(200).json({
             success: true,
-            message: 'registration successful',
+            message: 'Registration Successful',
           });
         });
     }).catch(err => console.log(err));
@@ -46,7 +47,7 @@ exports.login = async (req, res, next) => {
       if (!user)
         return res.json({
           success: false,
-          message: 'the email you entered is not registered',
+          message: 'The Email You Entered is Not Registered',
         });
 
       let token = jwt.sign(email, secret);
@@ -54,7 +55,7 @@ exports.login = async (req, res, next) => {
         if (match)
           return res.status(200).json({
             success: true,
-            message: 'login successfully',
+            message: 'Login Successfully',
             token,
             username: user.username,
             idUser: user._id,
@@ -63,7 +64,7 @@ exports.login = async (req, res, next) => {
 
         return res.json({
           success: false,
-          message: 'the password you entered is incorrect',
+          message: 'The Password You Entered is Incorrect',
         });
       });
     });

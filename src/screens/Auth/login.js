@@ -140,12 +140,14 @@ class Login extends React.Component {
                     <Input
                       onChangeText={text => this.handleEmail(text)}
                       returnKeyType="next"
+                      autoCapitalize="none"
                     />
                   </Item>
                   <Item floatingLabel>
                     <Label>Password</Label>
                     <Input
                       secureTextEntry={isVisible}
+                      autoCapitalize="none"
                       onChangeText={text => this.handlePassword(text)}
                       returnKeyType="done"
                     />

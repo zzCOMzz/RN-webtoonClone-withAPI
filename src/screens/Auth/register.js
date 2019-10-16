@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Alert,
+  Image,
   Keyboard,
   AsyncStorage,
 } from 'react-native';
@@ -19,6 +20,7 @@ import {
   Icon,
   Spinner,
 } from 'native-base';
+import LogoWebtoon from 'Assets/webtoon-logo.png';
 import Host from 'functions/host';
 import axios from 'axios';
 
@@ -50,7 +52,7 @@ class Register extends React.Component {
   };
 
   handlePassword = password => {
-    const weak = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    const weak = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
     const strong = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 
     this.setState({password});
@@ -164,13 +166,14 @@ class Register extends React.Component {
             alignItems: 'center',
             marginTop: '10%',
           }}>
+          <Image source={LogoWebtoon} style={{width: 160, height: 160}} />
           <Text style={{fontSize: 33}}>Welcome</Text>
           <View>
             <Text>Sign Up with new account</Text>
           </View>
         </View>
         <KeyboardAvoidingView behavior="position">
-          <View style={{marginTop: '20%'}}>
+          <View style={{marginTop: '8%'}}>
             {isLoading ? (
               <Spinner size="large" color="green" />
             ) : (
@@ -182,6 +185,7 @@ class Register extends React.Component {
                         <Label>Username</Label>
                         <Input
                           value={username}
+                          autoCapitalize="none"
                           onChangeText={text => this.setState({username: text})}
                           returnKeyType="next"
                         />
@@ -192,6 +196,7 @@ class Register extends React.Component {
                         <Label>Email</Label>
                         <Input
                           value={email}
+                          autoCapitalize="none"
                           style={
                             isEmailValid ? {color: 'black'} : {color: 'red'}
                           }
@@ -215,6 +220,7 @@ class Register extends React.Component {
                         </Label>
                         <Input
                           value={password}
+                          autoCapitalize="none"
                           onChangeText={text => this.handlePassword(text)}
                           returnKeyType="done"
                           secureTextEntry={isVisible}
