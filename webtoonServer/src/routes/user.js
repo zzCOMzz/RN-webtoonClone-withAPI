@@ -1,40 +1,42 @@
 const router = require('express').Router();
-const {showUser, addUser} = require('../controllers/user');
-const multer = require('multer');
-const mkdirp = require('mkdirp');
+const {checkToken} = require('../middlewares/auth');
+const {showUser, findUser} = require('../controllers/user');
+const WebtoonControllers = require('../controllers/webtoon');
+const bodyParser = require('body-parser');
 
-let storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'storage/uploads/' + req.params.nama);
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-const upload = multer({storage});
+const {
+  storage,
+  Multer,
+  addImageBannerWebtoon,
+} = require('../middlewares/multer');
+const {mkdirCreator, mkdirWebtoon} = require('../middlewares/mkdir');
+
+const upload = Multer({storage});
 
 router.get('/', showUser);
-
-const mkdir = (req, res, next) => {
-  mkdirp(`storage/uploads/${req.params.nama}`, err => {
-    if (err) return console.log('error mkdir', err);
-    console.log('##################');
-    console.log('MKDIR SUCCESS');
-    console.log('##################');
-    next();
-  });
-};
+router.get('/finduser/:id', findUser);
 router.post(
-  '/image/:nama',
-  mkdir,
-  upload.single('profile'),
+  '/image/:iduser',
+  mkdirCreator,
+  upload.array('profile'),
   (req, res, next) => {
     try {
-      res.send(req.file);
+      res.send(req.files);
     } catch (error) {
       console.log(error);
     }
   },
+);
+
+//? Create My Webtoon (21)
+const uploadBanner = Multer({storage: addImageBannerWebtoon});
+//? use query.folder for naming folder
+router.post(
+  '/:iduser/webtoon',
+  checkToken,
+  mkdirWebtoon,
+  uploadBanner.single('banner'),
+  WebtoonControllers.addWebtoon,
 );
 
 module.exports = router;

@@ -59,7 +59,7 @@ exports.login = async (req, res, next) => {
             token,
             username: user.username,
             idUser: user._id,
-            isCreator: user.is_creator.my_webtoon,
+            isCreator: user.my_webtoon,
           });
 
         return res.json({

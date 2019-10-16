@@ -6,10 +6,18 @@ const WebtoonSchema = new Schema({
   creator: {
     type: Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
   },
   favourite: {
     type: Number,
     default: 0,
+  },
+  image_banner: {
+    type: String,
+    required: true,
+  },
+  genre: {
+    type: String,
   },
   created_at: {
     type: Date,
@@ -17,13 +25,8 @@ const WebtoonSchema = new Schema({
   },
   title: {
     type: String,
+    required: true,
   },
-  episode: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Episode',
-    },
-  ],
 });
 
 module.exports = mongoose.model('Webtoon', WebtoonSchema);

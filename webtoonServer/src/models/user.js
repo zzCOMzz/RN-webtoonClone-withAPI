@@ -6,14 +6,6 @@ const UserSchema = new Schema({
   username: {type: String, required: true},
   email: {type: String, required: true},
   password: {type: String, required: true},
-  is_creator: {
-    my_webtoon: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Webtoon',
-      },
-    ],
-  },
   favourite: [
     {
       type: Schema.Types.ObjectId,

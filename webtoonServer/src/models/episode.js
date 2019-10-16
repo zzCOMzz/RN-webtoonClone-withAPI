@@ -2,8 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const EpisodeSchema = new Schema({
-  title: String,
-  image_url: [String],
+  title: {
+    type: String,
+    required: true,
+  },
+
   episode_id: {
     type: Schema.Types.ObjectId,
     ref: 'Webtoon',
