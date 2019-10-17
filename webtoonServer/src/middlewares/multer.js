@@ -2,11 +2,8 @@ const Multer = require('multer');
 const path = require('path');
 
 exports.Multer = Multer;
-exports.storage = Multer.diskStorage({
+exports.uploadProfile = Multer.diskStorage({
   destination: (req, file, cb) => {
-    console.log('Req file multer ', req.files);
-    console.log('Req body multer ', req.body);
-    console.log('Req params multer ', req.params);
     if (
       file.mimetype !== 'image/png' &&
       file.mimetype !== 'image/jpg' &&
@@ -18,14 +15,11 @@ exports.storage = Multer.diskStorage({
     }
   },
   filename: (req, file, cb) => {
-    cb(
-      null,
-      `${req.params.iduser}-${
-        req.body.nama
-      }-${new Date().toString().trim()}-${Math.floor(
-        Math.random() * 10,
-      )}${path.extname(file.originalname)}`,
-    );
+    req.myProfilePhoto = `/images/${req.params.iduser}/My_Profile${path.extname(
+      file.originalname,
+    )}`;
+    // cb(null, `My_Profile${path.extname(file.originalname)}`);
+    cb(null, `My_Profile.png`);
   },
 });
 

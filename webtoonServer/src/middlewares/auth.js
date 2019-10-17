@@ -3,6 +3,8 @@ const {secret} = require('../config');
 
 exports.checkToken = (req, res, next) => {
   let token = req.headers['x-access-token'] || req.headers['authorization'];
+  if (!token)
+    return res.json({message: 'You Have to Login First', success: false});
   if (token.startsWith('Bearir ')) {
     token = token.slice(7, token.length);
   }

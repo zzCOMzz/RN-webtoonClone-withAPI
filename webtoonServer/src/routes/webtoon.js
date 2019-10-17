@@ -7,7 +7,7 @@ router.get('/', WebtoonControllers.showAllWebtoon);
 router.get('/:title', WebtoonControllers.seacrhWithTitle);
 router.get('/:webtoonid/episode', checkToken, WebtoonControllers.getEpisode);
 router.get(
-  '/:webtoonid/episode/:episodeid/image',
+  '/:webtoonid/episode/:episodeid/detail',
   checkToken,
   WebtoonControllers.getDetailEpisode,
 );

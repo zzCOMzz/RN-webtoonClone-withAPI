@@ -24,3 +24,33 @@ exports.findUser = (req, res, next) => {
     console.log(err);
   }
 };
+
+exports.updateProfile = (req, res, next) => {
+  const imageProfile = req.myProfilePhoto;
+  const userId = req.params.iduser;
+  const username = req.body.username;
+  try {
+    if (req.body.username === null || req.body.username === '')
+      return res.json({message: 'Username cannot be empty ', success: false});
+
+    User.findByIdAndUpdate(
+      {_id: userId},
+      {
+        username,
+        image_profile: imageProfile,
+      },
+      (err, user) => {
+        if (err)
+          return res.json({success: false, message: 'Update Profile Failed'});
+      },
+    ).then(newUser => {
+      return res.json({
+        message: 'Update Profile Success',
+        success: true,
+        data: newUser,
+      });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

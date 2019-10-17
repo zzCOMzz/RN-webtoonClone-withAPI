@@ -2,11 +2,17 @@ const mongoose = require('../config/db');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-  user_id: {type: Schema.Types.ObjectId},
   username: {type: String, required: true},
   email: {type: String, required: true},
   password: {type: String, required: true},
   favourite: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Webtoon',
+    },
+  ],
+  image_profile: String,
+  my_creation: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Webtoon',

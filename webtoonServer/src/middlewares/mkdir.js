@@ -1,6 +1,6 @@
 const mkdirp = require('mkdirp');
 
-exports.mkdirCreator = (req, res, next) => {
+exports.mkdirProfile = (req, res, next) => {
   mkdirp(`storage/uploads/${req.params.iduser}`, err => {
     if (err) return console.log('error mkdir', err);
     console.log('##################');

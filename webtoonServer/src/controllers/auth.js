@@ -10,7 +10,8 @@ exports.register = async (req, res, next) => {
 
   try {
     await User.findOne({email}, (err, user) => {
-      if (err) console.log(err);
+      if (err)
+        return res.json({message: 'Registration Failed', success: false});
       if (user)
         return res.json({
           success: false,
@@ -59,7 +60,7 @@ exports.login = async (req, res, next) => {
             token,
             username: user.username,
             idUser: user._id,
-            isCreator: user.my_webtoon,
+            isCreator: user.my_creation,
           });
 
         return res.json({
