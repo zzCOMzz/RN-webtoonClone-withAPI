@@ -106,7 +106,7 @@ exports.addEpisode = Multer.diskStorage({
     }/${req.query.webtoontitle}-${
       req.query.episodetitle
     }-${new Date().getSeconds()}-${file.originalname}`;
-
+    req.imageName = file.originalname;
     cb(
       null,
       `${req.query.webtoontitle}-${

@@ -5,6 +5,7 @@ const ImageEpisode = require('../models/imageEpisode');
 const mkdirp = require('mkdirp');
 
 exports.showAllWebtoon = (req, res, next) => {
+  console.log('query showall :', req.query);
   try {
     Webtoon.find()
       .populate('creator', 'username _id')
@@ -18,14 +19,15 @@ exports.showAllWebtoon = (req, res, next) => {
 };
 
 exports.seacrhWithTitle = (req, res, next) => {
-  const title = req.params.title;
+  const title = req.query.search;
+
   try {
-    Webtoon.findOne({title}, (err, webtoon) => {
-      if (err)
-        return res.json({
-          success: false,
-          message: 'Not Found!, Search With Another Key',
-        });
+    let querySearch = new RegExp(title, 'i');
+    let q = {title: querySearch};
+    Webtoon.find(q).exec((err, webtoon) => {
+      if (err) return res.json({message: 'Error'});
+      if (webtoon.length <= 0)
+        return res.json({message: 'Not Found! Search With Another Key'});
       return res.json({success: true, data: webtoon});
     });
   } catch (error) {
@@ -55,7 +57,13 @@ exports.addWebtoon = (req, res, next) => {
             success: false,
             message: 'Failed on Create Webtoon',
           });
-        return res.json({success: true, data: webtoon});
+        user.my_creation.push(webtoon._id);
+        user.save();
+        return res.json({
+          success: true,
+          data: webtoon,
+          message: 'Create Webtoon Success',
+        });
       });
     });
   } catch (error) {
@@ -66,13 +74,9 @@ exports.addWebtoon = (req, res, next) => {
 exports.getMyWebtoon = (req, res, next) => {
   const userId = req.params.iduser;
   try {
-    Webtoon.find({creator: userId}, (err, webtoons) => {
-      let webtoonMap = {};
-      webtoons.forEach(webtoon => {
-        webtoonMap[webtoon._id] = webtoon;
-      });
-
-      res.json({data: webtoonMap});
+    Webtoon.find({creator: userId}).exec((err, webtoon) => {
+      if (err) return res.json({message: 'Not Found!', success: false});
+      return res.json({data: webtoon});
     });
   } catch (error) {
     console.log(error);
@@ -98,7 +102,8 @@ exports.addEpisode = (req, res, next) => {
         if (err)
           return res.json({
             success: false,
-            message: 'Failed on Create Episode',
+            message:
+              'Failed on Create Episode, Please Update With Cover of Episode',
           });
         return res.json({success: true, data: episode});
       });
@@ -139,7 +144,7 @@ exports.addImageToEpisode = (req, res, next) => {
       const addImageEpisode = new ImageEpisode({
         image_id: episodeId,
         image_url: imageUrl,
-        image_name: item.originalname,
+        image_name: imageName,
       });
 
       addImageEpisode.save({}, (err, image) => {

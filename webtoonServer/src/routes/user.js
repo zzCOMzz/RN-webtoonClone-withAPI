@@ -47,8 +47,18 @@ router.post(
 router.get('/:iduser/webtoon', checkToken, WebtoonControllers.getMyWebtoon);
 
 // TODO Get My Webtoon Episode
-//! http://localhost:3001/api/v1/user/5da6e9016c4e765927d33f62/webtoon/{webtoonid}/episodes
-router.get('/:iduser/webtoon/:webtoonid/episodes');
+//! http://localhost:3001/api/v1/user/5da6e9016c4e765927d33f62/webtoon/{webtoonid}/episode
+router.get(
+  '/:iduser/webtoon/:webtoonid/episode',
+  checkToken,
+  WebtoonControllers.getEpisode,
+);
+
+router.get(
+  '/:iduser/webtoon/:webtoonid/episode/:episodeid/detail',
+  checkToken,
+  WebtoonControllers.getDetailEpisode,
+);
 
 // TODO Create Episode Folder, upload cover, and naming folder episode
 //! http://localhost:3001/api/v1/user/5da6e9016c4e765927d33f62/webtoon/{webtoonid}/episode?webtoontitle=""&episodetitle=""
@@ -61,19 +71,13 @@ router.post(
   WebtoonControllers.addEpisode,
 );
 
-router.get(
-  '/:iduser/webtoon/:webtoonid/episode',
-  checkToken,
-  WebtoonControllers.getEpisode,
-);
-
 // TODO create Image Episode
 //! http://localhost:3001/api/v1/user/{iduser}/webtoon/{webtoonid}/episode/{episodeid}/image
 const uploadImage = Multer({storage: addEpisode});
 router.post(
   '/:iduser/webtoon/:webtoonid/episode/:episodeid/image',
   checkToken,
-  uploadImage.array('episode'),
+  uploadImage.single('episode'),
   WebtoonControllers.addImageToEpisode,
 );
 
