@@ -32,7 +32,6 @@ exports.updateProfile = (req, res, next) => {
   try {
     if (req.body.username === null || req.body.username === '')
       return res.json({message: 'Username cannot be empty ', success: false});
-
     User.findByIdAndUpdate(
       {_id: userId},
       {
