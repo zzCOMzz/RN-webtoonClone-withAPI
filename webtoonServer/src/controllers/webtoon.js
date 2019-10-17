@@ -19,7 +19,7 @@ exports.showAllWebtoon = (req, res, next) => {
 };
 
 exports.seacrhWithTitle = (req, res, next) => {
-  const title = req.query.search;
+  const title = req.params.search;
 
   try {
     let querySearch = new RegExp(title, 'i');

@@ -4,7 +4,7 @@ const WebtoonControllers = require('../controllers/webtoon');
 const {mkdirWebtoon} = require('../middlewares/mkdir');
 
 router.get('/', WebtoonControllers.showAllWebtoon);
-router.get('/search', WebtoonControllers.seacrhWithTitle);
+router.get('/:search', WebtoonControllers.seacrhWithTitle);
 router.get('/:webtoonid/episode', checkToken, WebtoonControllers.getEpisode);
 
 // todo get webtoon detail episode
