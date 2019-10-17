@@ -6,6 +6,8 @@ const {mkdirWebtoon} = require('../middlewares/mkdir');
 router.get('/', WebtoonControllers.showAllWebtoon);
 router.get('/:search', WebtoonControllers.seacrhWithTitle);
 router.get('/:webtoonid/episode', checkToken, WebtoonControllers.getEpisode);
+router.put('/:iduser', checkToken, WebtoonControllers.addToFavourite);
+router.delete('/:iduser', checkToken, WebtoonControllers.removeFromFavourite);
 
 // todo get webtoon detail episode
 router.get(

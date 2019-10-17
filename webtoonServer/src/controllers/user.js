@@ -2,7 +2,8 @@ const User = require('../models/user');
 
 exports.showUser = (req, res) => {
   User.find()
-    .populate('my_creation', 'title genre')
+    .populate('my_creation', 'title genre image_banner')
+    .populate('favourite', 'title image_banner genre')
     .exec((err, user) => {
       return res.json({data: user});
     });

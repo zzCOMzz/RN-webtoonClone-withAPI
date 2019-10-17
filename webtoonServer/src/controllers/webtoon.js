@@ -18,6 +18,33 @@ exports.showAllWebtoon = (req, res, next) => {
   }
 };
 
+exports.addToFavourite = (req, res, next) => {
+  const webtoonId = req.body.webtoonId;
+  const userId = req.params.iduser;
+  try {
+    User.findOneAndUpdate({_id: userId}).then(user => {
+      user.favourite.push(webtoonId);
+      user.save();
+      return res.json({message: 'Add To Favourite Success'});
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+exports.removeFromFavourite = (req, res, next) => {
+  const webtoonId = req.body.webtoonId;
+  const userId = req.params.iduser;
+  try {
+    User.findOneAndUpdate({_id: userId}).then(user => {
+      user.favourite.pull(webtoonId);
+      user.save();
+      return res.json({message: 'Remove From Favourite Success'});
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 exports.seacrhWithTitle = (req, res, next) => {
   const title = req.params.search;
 
