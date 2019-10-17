@@ -1,6 +1,7 @@
 const Webtoon = require('../models/webtoon');
 const User = require('../models/user');
 const Episode = require('../models/episode');
+const ImageEpisode = require('../models/imageEpisode');
 const mkdirp = require('mkdirp');
 
 exports.showAllWebtoon = (req, res, next) => {
@@ -117,6 +118,48 @@ exports.getEpisode = (req, res, next) => {
     // });
     Episode.find({episode_id: webtoonId}).exec((err, episode) => {
       if (err) return res.json({message: 'Episode Not Found', success: false});
+      return res.json({data: episode});
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.addImageToEpisode = (req, res, next) => {
+  const userId = req.params.iduser;
+  const webtoonId = req.params.webtoonid;
+  const episodeId = req.params.episodeid;
+  const imageUrl = req.imageUri;
+  const imageName = req.imageName;
+
+  try {
+    Episode.findOne({_id: episodeId}, (err, episode) => {
+      if (err) return res.json({message: 'Episode Not Found', success: false});
+
+      const addImageEpisode = new ImageEpisode({
+        image_id: episodeId,
+        image_url: imageUrl,
+        image_name: item.originalname,
+      });
+
+      addImageEpisode.save({}, (err, image) => {
+        if (err) return res.json({message: 'add image failed'});
+        return res.json({message: 'add image success'});
+      });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.getDetailEpisode = (req, res, next) => {
+  const userId = req.params.iduser;
+  const webtoonId = req.params.webtoonid;
+  const episodeId = req.params.episodeid;
+
+  try {
+    ImageEpisode.find({image_id: episodeId}, (err, episode) => {
+      if (err) return res.json({message: 'not valid image'});
       return res.json({data: episode});
     });
   } catch (error) {

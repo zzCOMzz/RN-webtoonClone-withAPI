@@ -90,3 +90,34 @@ exports.addEpisodeCover = Multer.diskStorage({
     );
   },
 });
+
+exports.addEpisode = Multer.diskStorage({
+  destination: (req, file, cb) => {
+    if (
+      file.mimetype !== 'image/png' &&
+      file.mimetype !== 'image/jpg' &&
+      file.mimetype !== 'image/jpeg'
+    ) {
+      cb(true, '');
+    } else {
+      cb(
+        null,
+        `storage/uploads/${req.params.iduser}/${req.query.webtoontitle}/${req.query.episodetitle}`,
+      );
+    }
+  },
+  filename: (req, file, cb) => {
+    req.imageUri = `/images/${req.params.iduser}/${req.query.webtoontitle}/${
+      req.query.episodetitle
+    }/${req.query.webtoontitle}-${
+      req.query.episodetitle
+    }-${new Date().getSeconds()}-${file.originalname}`;
+
+    cb(
+      null,
+      `${req.query.webtoontitle}-${
+        req.query.episodetitle
+      }-${new Date().getSeconds()}-${file.originalname}`,
+    );
+  },
+});

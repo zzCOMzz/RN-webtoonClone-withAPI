@@ -9,6 +9,7 @@ const {
   Multer,
   addImageBannerWebtoon,
   addEpisodeCover,
+  addEpisode,
 } = require('../middlewares/multer');
 const {
   mkdirCreator,
@@ -66,4 +67,20 @@ router.get(
   checkToken,
   WebtoonControllers.getEpisode,
 );
+
+//! http://localhost:3001/api/v1/user/{iduser}/webtoon/{webtoonid}/episode/{episodeid}/image
+const uploadImage = Multer({storage: addEpisode});
+router.post(
+  '/:iduser/webtoon/:webtoonid/episode/:episodeid/image',
+  checkToken,
+  uploadImage.array('episode'),
+  WebtoonControllers.addImageToEpisode,
+);
+
+router.get(
+  '/:iduser/webtoon/:webtoonid/episode/:episodeid/image',
+  checkToken,
+  WebtoonControllers.getDetailEpisode,
+);
+
 module.exports = router;
