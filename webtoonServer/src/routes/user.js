@@ -68,6 +68,13 @@ router.put(
   WebtoonControllers.editEpisode,
 );
 
+//todo delete Episode
+router.delete(
+  '/:iduser/webtoon/:webtoonid/episode/:episodeid',
+  checkToken,
+  WebtoonControllers.deleteEpisode,
+);
+
 //todo get Episode
 router.get(
   '/:iduser/webtoon/:webtoonid/episode/:episodeid/detail',

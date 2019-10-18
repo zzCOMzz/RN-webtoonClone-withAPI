@@ -258,6 +258,18 @@ exports.editEpisode = (req, res, next) => {
   }
 };
 
+exports.deleteEpisode = (req, res, next) => {
+  const episodeId = req.params.episodeid;
+  try {
+    Episode.findOneAndDelete({_id: episodeId}, (err, doc) => {
+      if (err) return res.json({message: 'deleted failed'});
+      return res.json({message: 'delete success'});
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 exports.addImageToEpisode = (req, res, next) => {
   const userId = req.params.iduser;
   const webtoonId = req.params.webtoonid;
