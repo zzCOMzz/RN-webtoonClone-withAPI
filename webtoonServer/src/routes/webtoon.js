@@ -4,10 +4,16 @@ const WebtoonControllers = require('../controllers/webtoon');
 const {mkdirWebtoon} = require('../middlewares/mkdir');
 
 router.get('/', WebtoonControllers.showAllWebtoon);
+
+//todo search webtoon
 router.get('/:search', WebtoonControllers.seacrhWithTitle);
-router.get('/:webtoonid/episode', checkToken, WebtoonControllers.getEpisode);
-router.put('/:iduser', checkToken, WebtoonControllers.addToFavourite);
+
+// todo add to favourite
+router.post('/:iduser', checkToken, WebtoonControllers.addToFavourite);
 router.delete('/:iduser', checkToken, WebtoonControllers.removeFromFavourite);
+
+// todo get episode list
+router.get('/:webtoonid/episode', checkToken, WebtoonControllers.getEpisode);
 
 // todo get webtoon detail episode
 router.get(
