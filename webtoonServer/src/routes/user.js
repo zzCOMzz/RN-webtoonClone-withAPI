@@ -46,6 +46,13 @@ router.post(
 //! http://localhost:3001/api/v1/user/5da6e9016c4e765927d33f62/webtoon/
 router.get('/:iduser/webtoon', checkToken, WebtoonControllers.getMyWebtoon);
 
+// Todo Edit My Webtoon
+router.put(
+  '/:iduser/webtoon/:webtoonid',
+  checkToken,
+  WebtoonControllers.editMyWebtoon,
+);
+
 // TODO Get My Webtoon Episode
 //! http://localhost:3001/api/v1/user/5da6e9016c4e765927d33f62/webtoon/{webtoonid}/episode
 router.get(

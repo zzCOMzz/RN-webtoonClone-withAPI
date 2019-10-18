@@ -8,7 +8,7 @@ router.get('/', WebtoonControllers.showAllWebtoon);
 //todo search webtoon
 router.get('/:search', WebtoonControllers.seacrhWithTitle);
 
-// todo add to favourite
+// todo  favourite
 router.post('/:iduser', checkToken, WebtoonControllers.addToFavourite);
 router.delete('/:iduser', checkToken, WebtoonControllers.removeFromFavourite);
 

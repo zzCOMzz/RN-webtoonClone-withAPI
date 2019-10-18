@@ -25,21 +25,32 @@ exports.addToFavourite = (req, res, next) => {
   try {
     User.findOneAndUpdate({_id: userId}).then(user => {
       Webtoon.findOne({_id: webtoonId}).exec((err, webtoon) => {
-        if (err) return res.json({message: 'cannot add to favorite'});
+        if (err)
+          return res.json({message: 'cannot add to favorite', success: false});
         const favExist = user.favourite.findIndex(item => {
           return item == webtoonId;
         });
 
         console.log(favExist);
         if (favExist !== -1) {
-          return res.json({message: 'Webtoon is Already in Favorite'});
+          return res.json({
+            message: 'Webtoon is Already in Favorite',
+            success: false,
+          });
         } else {
           webtoon.favourite += 1;
           webtoon.save({}, (err, webtoon) => {
-            if (err) return res.json({message: 'Failed add to favourite'});
+            if (err)
+              return res.json({
+                message: 'Failed add to favourite',
+                success: false,
+              });
             user.favourite.push(webtoon._id);
             user.save();
-            return res.json({message: 'Add To Favourite Success'});
+            return res.json({
+              message: 'Add To Favourite Success',
+              success: true,
+            });
           });
         }
       });
@@ -54,7 +65,8 @@ exports.removeFromFavourite = (req, res, next) => {
   try {
     User.findOneAndUpdate({_id: userId}).then(user => {
       Webtoon.findOne({_id: webtoonId}).exec((err, webtoon) => {
-        if (err) return res.json({message: 'cannot add to favorite'});
+        if (err)
+          return res.json({message: 'cannot add to favorite', success: false});
         const favExist = user.favourite.findIndex(item => {
           return item == webtoonId;
         });
@@ -64,13 +76,20 @@ exports.removeFromFavourite = (req, res, next) => {
         if (favExist !== -1) {
           webtoon.favourite -= 1;
           webtoon.save({}, (err, webtoon) => {
-            if (err) return res.json({message: 'Failed remove from favourite'});
+            if (err)
+              return res.json({
+                message: 'Failed remove from favourite',
+                success: false,
+              });
             user.favourite.pull(webtoon._id);
             user.save();
-            return res.json({message: 'Remove From favourite Success'});
+            return res.json({
+              message: 'Remove From favourite Success',
+              success: true,
+            });
           });
         } else {
-          return res.json({message: 'Webtoon Not in Favorite'});
+          return res.json({message: 'Webtoon Not in Favorite', success: false});
         }
       });
     });
@@ -88,7 +107,10 @@ exports.seacrhWithTitle = (req, res, next) => {
     Webtoon.find(q).exec((err, webtoon) => {
       if (err) return res.json({message: 'Error'});
       if (webtoon.length <= 0)
-        return res.json({message: 'Not Found! Search With Another Key'});
+        return res.json({
+          message: 'Not Found! Search With Another Key',
+          success: false,
+        });
       return res.json({success: true, data: webtoon});
     });
   } catch (error) {
@@ -139,6 +161,29 @@ exports.getMyWebtoon = (req, res, next) => {
       if (err) return res.json({message: 'Not Found!', success: false});
       return res.json({data: webtoon});
     });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.editMyWebtoon = (req, res, next) => {
+  const userId = req.params.iduser;
+  const webtoonId = req.params.webtoonid;
+  const title = req.body.title;
+  const genre = req.body.genre;
+  try {
+    Webtoon.findOneAndUpdate(
+      {_id: webtoonId},
+      {
+        genre: genre,
+        title: title,
+      },
+      (err, newWebtoon) => {
+        if (err) return res.json({message: 'failed'});
+        newWebtoon.save();
+        return res.json({message: 'success'});
+      },
+    );
   } catch (error) {
     console.log(error);
   }
