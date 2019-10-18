@@ -53,6 +53,8 @@ router.put(
   WebtoonControllers.editMyWebtoon,
 );
 
+//Todo delete My Webtoon
+
 // TODO Get My Webtoon Episode
 //! http://localhost:3001/api/v1/user/5da6e9016c4e765927d33f62/webtoon/{webtoonid}/episode
 router.get(
@@ -103,10 +105,18 @@ router.post(
   WebtoonControllers.addImageToEpisode,
 );
 
+//todo get image of episode
 router.get(
   '/:iduser/webtoon/:webtoonid/episode/:episodeid/image',
   checkToken,
   WebtoonControllers.getDetailEpisode,
+);
+
+//todo delete imageEpisode
+router.delete(
+  '/:iduser/webtoon/:webtoonid/episode/:episodeid/image/:imageid',
+  checkToken,
+  WebtoonControllers.deleteImageEpisode,
 );
 
 module.exports = router;

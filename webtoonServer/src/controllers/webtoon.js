@@ -179,9 +179,9 @@ exports.editMyWebtoon = (req, res, next) => {
         title: title,
       },
       (err, newWebtoon) => {
-        if (err) return res.json({message: 'failed'});
+        if (err) return res.json({message: 'failed', success: false});
         newWebtoon.save();
-        return res.json({message: 'success'});
+        return res.json({message: 'success', success: true});
       },
     );
   } catch (error) {
@@ -247,10 +247,11 @@ exports.editEpisode = (req, res, next) => {
       },
       (err, newEpisode) => {
         console.log(newEpisode);
-        if (err) return res.json({message: 'Edit Episode Failed'});
+        if (err)
+          return res.json({message: 'Edit Episode Failed', success: false});
         newEpisode.save();
 
-        return res.json({message: 'Edit Episode Success'});
+        return res.json({message: 'Edit Episode Success', success: true});
       },
     );
   } catch (error) {
@@ -262,8 +263,8 @@ exports.deleteEpisode = (req, res, next) => {
   const episodeId = req.params.episodeid;
   try {
     Episode.findOneAndDelete({_id: episodeId}, (err, doc) => {
-      if (err) return res.json({message: 'deleted failed'});
-      return res.json({message: 'delete success'});
+      if (err) return res.json({message: 'deleted failed', success: false});
+      return res.json({message: 'delete success', success: true});
     });
   } catch (error) {
     console.log(error);
@@ -288,8 +289,8 @@ exports.addImageToEpisode = (req, res, next) => {
       });
 
       addImageEpisode.save({}, (err, image) => {
-        if (err) return res.json({message: 'add image failed'});
-        return res.json({message: 'add image success'});
+        if (err) return res.json({message: 'add image failed', success: false});
+        return res.json({message: 'add image success', success: true});
       });
     });
   } catch (error) {
@@ -304,8 +305,21 @@ exports.getDetailEpisode = (req, res, next) => {
 
   try {
     ImageEpisode.find({image_id: episodeId}, (err, episode) => {
-      if (err) return res.json({message: 'not valid image'});
+      if (err) return res.json({message: 'not valid image', success: false});
       return res.json({data: episode});
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.deleteImageEpisode = (req, res, next) => {
+  const imageId = req.params.imageid;
+  try {
+    ImageEpisode.findByIdAndDelete({_id: imageId}, (err, doc) => {
+      if (err)
+        return res.json({message: 'delete image failed', success: false});
+      return res.json({message: 'image deleted', success: true});
     });
   } catch (error) {
     console.log(error);
