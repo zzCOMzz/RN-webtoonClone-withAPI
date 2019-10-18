@@ -189,6 +189,19 @@ exports.editMyWebtoon = (req, res, next) => {
   }
 };
 
+exports.deleteMyWebtoon = (req, res, next) => {
+  const webtoonId = req.params.webtoonid;
+  try {
+    Webtoon.findOneAndDelete({_id: webtoonId}, (err, doc) => {
+      if (err)
+        return res.json({message: 'delete webtoon failed', success: false});
+      return res.json({message: `delete ${doc.title} success`});
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 exports.addEpisode = (req, res, next) => {
   const userId = req.params.iduser;
   const webtoonId = req.params.webtoonid;
@@ -316,7 +329,7 @@ exports.getDetailEpisode = (req, res, next) => {
 exports.deleteImageEpisode = (req, res, next) => {
   const imageId = req.params.imageid;
   try {
-    ImageEpisode.findByIdAndDelete({_id: imageId}, (err, doc) => {
+    ImageEpisode.findOneAndDelete({_id: imageId}, (err, doc) => {
       if (err)
         return res.json({message: 'delete image failed', success: false});
       return res.json({message: 'image deleted', success: true});

@@ -54,6 +54,11 @@ router.put(
 );
 
 //Todo delete My Webtoon
+router.delete(
+  '/:iduser/webtoon/:webtoonid',
+  checkToken,
+  WebtoonControllers.deleteMyWebtoon,
+);
 
 // TODO Get My Webtoon Episode
 //! http://localhost:3001/api/v1/user/5da6e9016c4e765927d33f62/webtoon/{webtoonid}/episode
