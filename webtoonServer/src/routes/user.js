@@ -61,6 +61,14 @@ router.get(
   WebtoonControllers.getEpisode,
 );
 
+//todo Edit Episode
+router.put(
+  '/:iduser/webtoon/:webtoonid/episode/:episodeid',
+  checkToken,
+  WebtoonControllers.editEpisode,
+);
+
+//todo get Episode
 router.get(
   '/:iduser/webtoon/:webtoonid/episode/:episodeid/detail',
   checkToken,

@@ -236,6 +236,28 @@ exports.getEpisode = (req, res, next) => {
   }
 };
 
+exports.editEpisode = (req, res, next) => {
+  const episodeId = req.params.episodeid;
+  const titleEpisode = req.body.title;
+  try {
+    Episode.findByIdAndUpdate(
+      {_id: episodeId},
+      {
+        title: titleEpisode,
+      },
+      (err, newEpisode) => {
+        console.log(newEpisode);
+        if (err) return res.json({message: 'Edit Episode Failed'});
+        newEpisode.save();
+
+        return res.json({message: 'Edit Episode Success'});
+      },
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 exports.addImageToEpisode = (req, res, next) => {
   const userId = req.params.iduser;
   const webtoonId = req.params.webtoonid;
