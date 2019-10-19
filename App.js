@@ -1,14 +1,12 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {Provider, connect} from 'react-redux';
+import {createReduxContainer} from 'react-navigation-redux-helpers';
 
-import AppStack from 'navigator';
+import AppStackNavigator from 'navigator';
+// import {store} from './src/redux/store';
 
 const App = () => {
-  return (
-    <View style={{flex: 1}}>
-      <AppStack />
-    </View>
-  );
+  return <AppStackNavigator />;
 };
 
 export default App;

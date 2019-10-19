@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   AsyncStorage,
   Keyboard,
+  ToastAndroid,
 } from 'react-native';
 
 import {
@@ -76,31 +77,33 @@ class Login extends React.Component {
           console.log(data);
           if (data.success) {
             AsyncStorage.setItem('token', data.token);
+            AsyncStorage.setItem('userData', data.username);
             this.setState({isLoading: false});
             return this.props.navigation.navigate('AuthLoading');
           } else {
-            Alert.alert(`${data.message}`, '', [
-              {text: 'Try Again', onPress: () => console.log('ok')},
-            ]);
+            ToastAndroid.showWithGravity(
+              `${data.message}`,
+              ToastAndroid.BOTTOM,
+              ToastAndroid.LONG,
+              25,
+              30,
+            );
             this.setState({isLoading: false, isEmailValid: false});
           }
         })
         .catch(err => {
-          Alert.alert(`${err}`, 'Can not get data from Server', [
-            {text: 'Try Again', onPress: () => console.log('Ok')},
-          ]);
+          ToastAndroid.showWithGravity(
+            `${err}`,
+            ToastAndroid.BOTTOM,
+            ToastAndroid.LONG,
+            25,
+            30,
+          );
           this.setState({isLoading: false, isEmailValid: false});
           console.log('Error :', err);
         });
     } else {
-      Alert.alert('Data Not Valid', 'Please, Complete the Form Correctly', [
-        {
-          text: 'Try Again',
-          onPress: () => {
-            console.log('ok');
-          },
-        },
-      ]);
+      ToastAndroid.showWithGravity(`Data Not Valid`, ToastAndroid.LONG, 0);
       console.log(Host);
     }
   };

@@ -7,11 +7,11 @@ const AuthLoadingScreen = props => {
   useEffect(() => {
     AsyncStorage.getItem('token').then(token => {
       console.log('Ini token Asli ', token);
+
+      setTimeout(() => {
+        props.navigation.navigate(token ? 'App' : 'Login');
+      }, 1200);
     });
-    const isUserExist = AsyncStorage.getItem('token');
-    setTimeout(() => {
-      props.navigation.navigate(isUserExist ? 'App' : 'Login');
-    }, 1200);
   });
   return (
     <View style={{flex: 1}}>

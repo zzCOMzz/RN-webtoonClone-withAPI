@@ -20,6 +20,12 @@ class ProfileScreen extends Component {
       nameProfile: 'JSON.parse(initLoginState.userData).email',
     };
   }
+  componentDidMount() {
+    AsyncStorage.getItem('userData', (err, data) => {
+      console.log(data);
+      this.setState({nameProfile: data});
+    });
+  }
 
   handleEdit = () => {
     this.props.navigation.navigate('EditProfile');
@@ -72,7 +78,7 @@ class ProfileScreen extends Component {
             <TouchableOpacity
               onPress={() => {
                 AsyncStorage.clear();
-                this.props.navigation.navigate('Auth');
+                this.props.navigation.navigate('AuthLoading');
               }}>
               <Text style={{fontSize: 25}}>Log Out</Text>
             </TouchableOpacity>

@@ -18,7 +18,6 @@ class EditProfileScreen extends Component {
   handleEditPhoto = () => {
     const options = {
       title: 'Select Photo',
-      customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
       storageOptions: {
         skipBackup: true,
         path: 'images',
