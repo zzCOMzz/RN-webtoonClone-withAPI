@@ -8,15 +8,25 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {Item, Input, Icon, Card, CardItem, Button, Fab} from 'native-base';
+import {host} from '../../functions/host';
+import {Icon, Card, CardItem, Button, Fab} from 'native-base';
 import {initLoginState} from 'reducers';
-export default class Creation extends Component {
+import {getUserId, getUserToken} from '../../functions';
+import {connect} from 'react-redux';
+import {actionGetMyWebtoon} from '../../redux/actions/actionWebtoon';
+class Creation extends Component {
   constructor(props) {
     super(props);
     this.state = {
       dataImage: initLoginState.banners,
       fabAction: false,
     };
+  }
+  async componentDidMount() {
+    const userId = await getUserId();
+    const token = await getUserToken();
+    await this.props.dipatchGetMyWebtoon(userId, token);
+    console.log('get My Webtoon', this.props);
   }
 
   render() {
@@ -26,28 +36,42 @@ export default class Creation extends Component {
         <View style={{flex: 1}}>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={dataImage}
+            data={this.props.getMyWebtoon.data}
             renderItem={({item}) => {
               return (
-                <Card key={item.id}>
+                <Card key={item._id}>
                   <TouchableOpacity
                     onPress={() =>
                       this.props.navigation.navigate('EditWebtoon')
                     }>
                     <CardItem>
-                      <Image source={{uri: item.url}} style={Styles.image} />
+                      <Image
+                        source={{uri: `${host}${item.image_banner}`}}
+                        style={Styles.image}
+                      />
                       <View style={{marginLeft: 15}}>
-                        <Text style={Styles.titleItem}>{item.title}</Text>
-                        <Text style={{fontSize: 15}}>
-                          {Math.floor(Math.random() * 99)} Episode(s)
+                        <Text style={Styles.titleItem}>
+                          {item.title.toUpperCase()}
                         </Text>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                          }}>
+                          <Text style={{fontSize: 15, marginRight: 35}}>
+                            Genre : {item.genre}
+                          </Text>
+                          <Text style={{fontSize: 15}}>
+                            favourite : {item.favourite}
+                          </Text>
+                        </View>
                       </View>
                     </CardItem>
                   </TouchableOpacity>
                 </Card>
               );
             }}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item._id}
           />
         </View>
 
@@ -74,6 +98,25 @@ export default class Creation extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    getMyWebtoon: state.getMyWebtoon.data,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dipatchGetMyWebtoon: (userId, token) => {
+      dispatch(actionGetMyWebtoon(userId, token));
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Creation);
 
 const Styles = StyleSheet.create({
   searchInput: {

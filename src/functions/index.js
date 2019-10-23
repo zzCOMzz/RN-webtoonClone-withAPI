@@ -28,8 +28,8 @@ export const createFormData = (photo, fileKey, body) => {
 
 export const editProfile = async formData => {
   const userId = await getUserId();
-
   const token = await getUserToken();
+
   const updateUser = await axios.put(
     `${Host}/user/${userId}/uploadprofile`,
     formData,
@@ -39,9 +39,16 @@ export const editProfile = async formData => {
   return updateUser;
 };
 
-export const addWebtoon = async (formData, userId) => {
-  // const token = await getUserToken();
-  // const userId = await getUserId();
+export const addWebtoon = async (formData, webtoonTitle) => {
+  const token = await getUserToken();
+  const userId = await getUserId();
+
+  const uploadWebtoon = await axios.post(
+    `${Host}/user/${userId}/webtoon?webtoontitle=${webtoonTitle}`,
+    formData,
+    {headers: {Authorization: `${token}`}},
+  );
+  return uploadWebtoon;
 };
 
 export const editWebtoon = async () => {};

@@ -7,48 +7,35 @@ import {
   Image,
   AsyncStorage,
 } from 'react-native';
-import {Icon} from 'native-base';
+import {Icon, Spinner} from 'native-base';
 import HeaderProfile from 'components/headerProfile';
-import Host, {host} from '../../functions/host';
-import Axios from 'axios';
+import {host} from '../../functions/host';
+
 import {getUserId, getUserToken} from '../../functions';
 
 import {actionGetProfile} from '../../redux/actions/actionEditProfile';
+import {actionGetMyWebtoon} from '../../redux/actions/actionWebtoon';
 import {connect} from 'react-redux';
 
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imageDefault: 'https://static.thenounproject.com/png/994628-200.png',
+      imageDefault: ``,
       nameDefault: '',
-      imageSource: `${this.props.userData.data.image_profile}`,
+      // imageSource: `${this.props.userData.data.image_profile}`,
       nameSource: '',
     };
   }
 
   async componentDidMount() {
-    AsyncStorage.getItem('username', (err, username) => {
-      this.setState({nameDefault: username});
-    });
-    AsyncStorage.getItem('imageProfile', (err, image) => {
-      console.log('IMAGE DEFAULT ', image);
-      if (image !== null) {
-        this.setState({imageDefault: `${host}${image}`});
-      }
-    });
-
-    // console.log(`DATA PROPS ${host}${this.props.userData.data.image_profile}`);
-    console.log(
-      `DATA PROPS ${this.props.userData.data.image_profile}, => ${this.state.imageDefault}`,
-    );
-    this.setState({
-      imageSource: `${this.props.userData.data.image_profile}`,
-      nameSource: this.props.userData.data.username,
-    });
     const token = await getUserToken();
     const userId = await getUserId();
     await this.props.actionGetProfile(userId, token);
+    await this.props.actionGetMyWebtoon(userId, token);
+    AsyncStorage.getItem('username', (err, username) => {
+      this.setState({nameDefault: username});
+    });
   }
 
   handleEdit = () => {
@@ -66,32 +53,51 @@ class ProfileScreen extends Component {
           icon="create"
         />
         <View style={{alignItems: 'center', marginTop: '10%'}}>
-          <View style={Styles.imageProf}>
-            <Image
-              style={Styles.img}
-              source={{
-                uri: !this.props.userData.data.image_profile
-                  ? imageDefault
-                  : `${host}${this.props.userData.data.image_profile}`,
-              }}
-            />
-            <Text style={{fontSize: 30}}>
-              {!this.props.userData.data.username
-                ? nameDefault
-                : this.props.userData.data.username}
-            </Text>
-          </View>
+          {this.props.userData.isLoading == true ? (
+            <Spinner />
+          ) : (
+            <View style={Styles.imageProf}>
+              <Image
+                style={Styles.img}
+                source={{
+                  uri: `${host}${this.props.userData.data.image_profile}`,
+                }}
+              />
+              <Text style={{fontSize: 30}}>
+                {this.props.userData.data.username || nameDefault}
+              </Text>
+            </View>
+          )}
         </View>
         <View style={{marginTop: 40}}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Creation')}>
-            <View style={Styles.creation}>
-              <Text style={{fontSize: 25}}>My Webtoon Creation</Text>
-              <Icon name="ios-arrow-forward" style={{margin: 4}} />
-            </View>
-          </TouchableOpacity>
+          {this.props.userData.data.my_creation.length <= 0 ? (
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('Creation')}>
+              <View
+                style={[
+                  Styles.creation,
+                  {
+                    borderWidth: 2,
+                    justifyContent: 'center',
+                    padding: 4,
+                    marginBottom: 20,
+                  },
+                ]}>
+                <Text style={{fontSize: 25, color: 'red'}}>Become Creator</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('Creation')}>
+              <View style={[Styles.creation]}>
+                <Text style={{fontSize: 25}}>My Webtoon Creation</Text>
+                <Icon name="ios-arrow-forward" style={{margin: 4}} />
+              </View>
+            </TouchableOpacity>
+          )}
           <View style={Styles.logoutBtn}>
             <TouchableOpacity
+              style={{alignItems: 'center'}}
               onPress={() => {
                 AsyncStorage.clear();
                 this.props.navigation.navigate('AuthLoading');
@@ -112,7 +118,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {actionGetProfile},
+  {actionGetProfile, actionGetMyWebtoon},
 )(ProfileScreen);
 
 const Styles = StyleSheet.create({

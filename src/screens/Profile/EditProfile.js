@@ -12,7 +12,7 @@ import ImagePicker from 'react-native-image-picker';
 import HeaderProfile from 'components/headerProfile';
 
 import Axios from 'axios';
-import Host from '../../functions/host';
+import {host} from '../../functions/host';
 
 import {
   getUserId,
@@ -27,12 +27,22 @@ class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imageProfile: this.props.navigation.getParam('imageProfile'),
-      nameProfile: this.props.navigation.getParam('name'),
+      imageProfile: '',
+      nameProfile: '',
+      editedImage: '',
     };
   }
 
-  componentDidMount() {}
+  async componentDidMount() {
+    // const token = await getUserToken();
+    // const userId = await getUserId();
+    // await this.props.actionGetProfile(userId, token);
+    this.setState({
+      nameProfile: this.props.userData.data.username,
+      imageProfile: {uri: `${host}${this.props.userData.data.image_profile}`},
+      editedImage: {uri: `${host}${this.props.userData.data.image_profile}`},
+    });
+  }
 
   handleEditPhoto = () => {
     const options = {
@@ -52,10 +62,13 @@ class EditProfileScreen extends Component {
       } else if (res.customButton) {
         console.log(res.customButton);
       } else {
-        console.log(res);
-        const sourceImage = res;
+        let photo = {
+          uri: res.uri,
+          type: res.type,
+          name: res.fileName,
+        };
         this.setState({
-          imageProfile: sourceImage,
+          imageProfile: photo,
         });
       }
     });
@@ -65,15 +78,24 @@ class EditProfileScreen extends Component {
     const token = await getUserToken();
     const userId = await getUserId();
 
-    const formData = await createFormData(this.state.imageProfile, 'profile', {
-      username: this.state.nameProfile,
-    });
-
+    //
+    const formData = new FormData();
+    formData.append('username', this.state.nameProfile);
+    if (this.state.imageProfile.uri !== this.state.editedImage.uri) {
+      formData.append('profile', this.state.imageProfile);
+    }
     await editProfile(formData);
+    await this.props.editProfile(userId, token);
 
-    await this.props.actionGetProfile(userId, token);
-
-    this.props.navigation.navigate('Profile');
+    if (this.props.userData.data.profile_name !== null) {
+      this.props.navigation.navigate('Profile');
+    } else {
+      ToastAndroid.showWithGravity(
+        `${this.props.userData.data.message}`,
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
+    }
   }
   render() {
     const {imageProfile, nameProfile} = this.state;
@@ -82,7 +104,6 @@ class EditProfileScreen extends Component {
         <HeaderProfile
           handleFunc={async () => {
             await this.handleUpdate();
-            this.props.navigation.navigate('Profile');
           }}
           title="Edit Profile"
           icon="checkmark"
@@ -92,9 +113,7 @@ class EditProfileScreen extends Component {
             <Image
               style={{height: 150, width: 150, borderRadius: 100}}
               source={{
-                uri: !imageProfile
-                  ? this.props.navigation.getParam('image')
-                  : imageProfile.uri,
+                uri: imageProfile.uri,
               }}
             />
             <TouchableOpacity onPress={() => this.handleEditPhoto()}>
@@ -103,7 +122,7 @@ class EditProfileScreen extends Component {
             <Item style={{paddingHorizontal: 40}}>
               <Input
                 value={nameProfile}
-                placeholder={this.props.navigation.getParam('name')}
+                placeholder={this.props.userData.data.username}
                 onChangeText={text => this.setState({nameProfile: text})}
               />
             </Item>
@@ -122,9 +141,14 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+const mapStateToProps = state => {
+  return {
+    userData: state.getProfile.data,
+  };
+};
 export default connect(
+  mapStateToProps,
   mapDispatchToProps,
-  {actionGetProfile},
 )(EditProfileScreen);
 
 const Styles = StyleSheet.create({
