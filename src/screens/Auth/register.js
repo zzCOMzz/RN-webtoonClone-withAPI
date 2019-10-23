@@ -128,7 +128,9 @@ class Register extends React.Component {
         const {data} = res;
         if (data.success) {
           AsyncStorage.setItem('token', data.token);
-
+          AsyncStorage.setItem('username', data.username);
+          AsyncStorage.setItem('userId', data.idUser);
+          AsyncStorage.setItem('imageProfile', data.image_profile);
           return this.props.navigation.navigate('AuthLoading');
         } else {
           Alert.alert(`${data.message}`, 'Back to Login', [

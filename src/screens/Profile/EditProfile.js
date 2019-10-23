@@ -1,19 +1,38 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import {Header, Left, Item, Input, Icon} from 'native-base';
+import {
+  View,
+  Platform,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  ToastAndroid,
+} from 'react-native';
+import {Item, Input, Icon} from 'native-base';
 import ImagePicker from 'react-native-image-picker';
 import HeaderProfile from 'components/headerProfile';
 
-import {initLoginState} from 'reducers';
+import Axios from 'axios';
+import Host from '../../functions/host';
+
+import {
+  getUserId,
+  getUserToken,
+  createFormData,
+  editProfile,
+} from '../../functions';
+import {connect} from 'react-redux';
+import {actionGetProfile} from '../../redux/actions/actionEditProfile';
+
 class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       imageProfile: this.props.navigation.getParam('imageProfile'),
-      isEditProfile: false,
       nameProfile: this.props.navigation.getParam('name'),
     };
   }
+
+  componentDidMount() {}
 
   handleEditPhoto = () => {
     const options = {
@@ -33,24 +52,37 @@ class EditProfileScreen extends Component {
       } else if (res.customButton) {
         console.log(res.customButton);
       } else {
-        const sourceImage = res.uri;
-        this.setState({imageProfile: sourceImage});
+        console.log(res);
+        const sourceImage = res;
+        this.setState({
+          imageProfile: sourceImage,
+        });
       }
     });
   };
+
+  async handleUpdate() {
+    const token = await getUserToken();
+    const userId = await getUserId();
+
+    const formData = await createFormData(this.state.imageProfile, 'profile', {
+      username: this.state.nameProfile,
+    });
+
+    await editProfile(formData);
+
+    await this.props.actionGetProfile(userId, token);
+
+    this.props.navigation.navigate('Profile');
+  }
   render() {
-    const {imageProfile, isEditProfile, nameProfile} = this.state;
+    const {imageProfile, nameProfile} = this.state;
     return (
       <View>
         <HeaderProfile
-          handleFunc={() => {
-            this.props.navigation.navigate('Profile', {
-              image: this.state.imageProfile,
-              name:
-                nameProfile !== nameProfile
-                  ? this.props.navigation.getParam('name')
-                  : nameProfile,
-            });
+          handleFunc={async () => {
+            await this.handleUpdate();
+            this.props.navigation.navigate('Profile');
           }}
           title="Edit Profile"
           icon="checkmark"
@@ -60,7 +92,9 @@ class EditProfileScreen extends Component {
             <Image
               style={{height: 150, width: 150, borderRadius: 100}}
               source={{
-                uri: imageProfile,
+                uri: !imageProfile
+                  ? this.props.navigation.getParam('image')
+                  : imageProfile.uri,
               }}
             />
             <TouchableOpacity onPress={() => this.handleEditPhoto()}>
@@ -69,11 +103,7 @@ class EditProfileScreen extends Component {
             <Item style={{paddingHorizontal: 40}}>
               <Input
                 value={nameProfile}
-                placeholder={
-                  !this.props.navigation.getParam('name')
-                    ? nameProfile
-                    : this.props.navigation.getParam('name')
-                }
+                placeholder={this.props.navigation.getParam('name')}
                 onChangeText={text => this.setState({nameProfile: text})}
               />
             </Item>
@@ -83,6 +113,19 @@ class EditProfileScreen extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    editProfile: (userId, token) => {
+      dispatch(actionGetProfile(userId, token));
+    },
+  };
+};
+
+export default connect(
+  mapDispatchToProps,
+  {actionGetProfile},
+)(EditProfileScreen);
 
 const Styles = StyleSheet.create({
   imgStyle: {justifyContent: 'center', alignItems: 'center'},
@@ -103,4 +146,3 @@ const Styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
-export default EditProfileScreen;

@@ -7,24 +7,48 @@ import {
   Image,
   AsyncStorage,
 } from 'react-native';
-import {Left, Item, Input, Icon} from 'native-base';
+import {Icon} from 'native-base';
 import HeaderProfile from 'components/headerProfile';
+import Host, {host} from '../../functions/host';
+import Axios from 'axios';
+import {getUserId, getUserToken} from '../../functions';
 
-import {initLoginState} from 'reducers';
+import {actionGetProfile} from '../../redux/actions/actionEditProfile';
+import {connect} from 'react-redux';
+
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imageProfile: 'https://static.thenounproject.com/png/994628-200.png',
-      isEditProfile: false,
-      nameProfile: 'JSON.parse(initLoginState.userData).email',
+      imageDefault: 'https://static.thenounproject.com/png/994628-200.png',
+      nameDefault: '',
+      imageSource: `${this.props.userData.data.image_profile}`,
+      nameSource: '',
     };
   }
-  componentDidMount() {
-    AsyncStorage.getItem('userData', (err, data) => {
-      console.log(data);
-      this.setState({nameProfile: data});
+
+  async componentDidMount() {
+    AsyncStorage.getItem('username', (err, username) => {
+      this.setState({nameDefault: username});
     });
+    AsyncStorage.getItem('imageProfile', (err, image) => {
+      console.log('IMAGE DEFAULT ', image);
+      if (image !== null) {
+        this.setState({imageDefault: `${host}${image}`});
+      }
+    });
+
+    // console.log(`DATA PROPS ${host}${this.props.userData.data.image_profile}`);
+    console.log(
+      `DATA PROPS ${this.props.userData.data.image_profile}, => ${this.state.imageDefault}`,
+    );
+    this.setState({
+      imageSource: `${this.props.userData.data.image_profile}`,
+      nameSource: this.props.userData.data.username,
+    });
+    const token = await getUserToken();
+    const userId = await getUserId();
+    await this.props.actionGetProfile(userId, token);
   }
 
   handleEdit = () => {
@@ -32,20 +56,12 @@ class ProfileScreen extends Component {
   };
 
   render() {
-    const {imageProfile, isEditProfile, nameProfile} = this.state;
+    const {imageDefault, nameDefault, imageSource, nameSource} = this.state;
+
     return (
       <View>
         <HeaderProfile
-          handleFunc={() =>
-            this.props.navigation.navigate('EditProfile', {
-              imageProfile: !this.props.navigation.getParam('image')
-                ? imageProfile
-                : this.props.navigation.getParam('image'),
-              name: !this.props.navigation.getParam('name')
-                ? nameProfile
-                : this.props.navigation.getParam('name'),
-            })
-          }
+          handleFunc={() => this.props.navigation.navigate('EditProfile')}
           title="Profile"
           icon="create"
         />
@@ -54,15 +70,15 @@ class ProfileScreen extends Component {
             <Image
               style={Styles.img}
               source={{
-                uri: !this.props.navigation.getParam('image')
-                  ? imageProfile
-                  : this.props.navigation.getParam('image'),
+                uri: !this.props.userData.data.image_profile
+                  ? imageDefault
+                  : `${host}${this.props.userData.data.image_profile}`,
               }}
             />
             <Text style={{fontSize: 30}}>
-              {!this.props.navigation.getParam('name')
-                ? nameProfile
-                : this.props.navigation.getParam('name')}
+              {!this.props.userData.data.username
+                ? nameDefault
+                : this.props.userData.data.username}
             </Text>
           </View>
         </View>
@@ -88,6 +104,16 @@ class ProfileScreen extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    userData: state.getProfile.data,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {actionGetProfile},
+)(ProfileScreen);
 
 const Styles = StyleSheet.create({
   textProf: {fontSize: 25, fontWeight: 'bold'},
@@ -119,4 +145,3 @@ const Styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
-export default ProfileScreen;

@@ -10,7 +10,7 @@ const AuthLoadingScreen = props => {
 
       setTimeout(() => {
         props.navigation.navigate(token ? 'App' : 'Login');
-      }, 1200);
+      }, 1000);
     });
   });
   return (

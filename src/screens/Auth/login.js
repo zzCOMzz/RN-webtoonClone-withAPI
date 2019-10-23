@@ -74,10 +74,12 @@ class Login extends React.Component {
       })
         .then(res => {
           const {data} = res;
-          console.log(data);
           if (data.success) {
             AsyncStorage.setItem('token', data.token);
-            AsyncStorage.setItem('userData', data.username);
+            AsyncStorage.setItem('username', data.username);
+            AsyncStorage.setItem('userId', data.idUser);
+            AsyncStorage.setItem('imageProfile', data.image_profile);
+
             this.setState({isLoading: false});
             return this.props.navigation.navigate('AuthLoading');
           } else {
@@ -109,15 +111,7 @@ class Login extends React.Component {
   };
 
   render() {
-    const {
-      isVisible,
-      isEmailValid,
-      email,
-      password,
-      btnActive,
-      isError,
-      isLoading,
-    } = this.state;
+    const {isVisible, isEmailValid, isLoading} = this.state;
     return (
       <View>
         <KeyboardAvoidingView behavior="position">
