@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import {Item, Input, Icon, Card, CardItem, Button, Label} from 'native-base';
 import {initLoginState} from 'reducers';
@@ -57,36 +58,7 @@ export default class CreateEpisode extends Component {
   };
 
   handleAddImage = () => {
-    // const options = {
-    //   title: 'Select Photo',
-    //   storageOptions: {
-    //     skipBackup: true,
-    //     path: 'images',
-    //   },
-    // };
-    // ImagePicker.showImagePicker(options, res => {
-    //   if (res.didCancel) {
-    //     alert('Add Image was Canceled');
-    //   } else if (res.error) {
-    //     console.log(res.error);
-    //     alert('Response Erorr');
-    //   } else if (res.customButton) {
-    //     console.log(res.customButton);
-    //   } else {
-    //     let opt = {
-    //       uri: res.uri,
-    //       type: res.type,
-    //       fileName: res.fileName,
-    //     };
-
-    //     this.setState({
-    //       imageEpisode: [...this.state.imageEpisode, opt],
-    //     });
-    //   }
-    // });
-
     CropPicker.openPicker({multiple: true}).then(images => {
-      console.log(images);
       images.map(image => {
         let opt = {
           uri: image.path,
@@ -104,8 +76,8 @@ export default class CreateEpisode extends Component {
   };
   render() {
     return (
-      <View style={{flex: 1, marginHorizontal: 10}}>
-        <View style={{marginTop: '3%'}}>
+      <View style={{marginHorizontal: 10}}>
+        <View style={{marginTop: '3%', flex: 2}}>
           <Text style={{fontSize: 20}}>Title Episode</Text>
           <Item reguler style={Styles.searchInput}>
             <Input
@@ -116,59 +88,97 @@ export default class CreateEpisode extends Component {
             />
           </Item>
         </View>
-        <View style={{flex: 1, marginTop: '5%'}}>
-          <Text style={{fontSize: 20}}>Add Cover</Text>
-          <TouchableOpacity onPress={() => this.handleAddImageCover()}>
-            <Image
-              source={this.state.imageEpisodeCover}
-              style={{width: '100%', height: 140}}
-            />
-          </TouchableOpacity>
-        </View>
-        <ScrollView
-          style={{
-            flex: 1,
-            marginTop: '10%',
-            borderWidth: 1,
-            borderRadius: 8,
-            padding: 10,
-          }}>
-          {this.state.imageEpisode.map((item, idx) => {
-            return (
-              <View
-                key={item.uri}
-                style={{justifyContent: 'space-around', flexDirection: 'row'}}>
-                <Image
-                  source={item}
-                  style={{width: 90, height: 90, marginBottom: 20}}
-                />
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <TouchableOpacity
-                    onPress={() => this.deleteImage(item)}
+
+        <View
+          style={{flex: 8, marginTop: Dimensions.get('screen').height * 0.12}}>
+          <View style={{height: 150}}>
+            <Text style={{fontSize: 20}}>Add Cover</Text>
+            <TouchableOpacity onPress={() => this.handleAddImageCover()}>
+              <Image
+                source={this.state.imageEpisodeCover}
+                style={{width: '100%', height: 140}}
+              />
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              marginTop: 30,
+              borderWidth: 1,
+              borderRadius: 8,
+              padding: 10,
+              height: Dimensions.get('window').height * 0.3,
+            }}>
+            <Text style={{fontSize: 18}}>Episodes</Text>
+            <ScrollView>
+              {this.state.imageEpisode.map((item, idx) => {
+                return (
+                  <View
+                    key={item.uri}
                     style={{
-                      backgroundColor: 'red',
-                      height: 40,
-                      width: 80,
-                      borderRadius: 8,
-                      justifyContent: 'center',
-                      alignItems: 'center',
+                      flex: 1,
+                      justifyContent: 'space-around',
+                      flexDirection: 'row',
                     }}>
-                    <Text style={{color: 'white'}}>Delete</Text>
-                  </TouchableOpacity>
-                  <View>
-                    <Text>{idx + 1}.jpg</Text>
+                    <Image
+                      source={item}
+                      style={{width: 90, height: 90, marginBottom: 20}}
+                    />
+                    <View
+                      style={{justifyContent: 'center', alignItems: 'center'}}>
+                      <TouchableOpacity
+                        onPress={() => this.deleteImage(item)}
+                        style={{
+                          backgroundColor: 'red',
+                          height: 40,
+                          width: 80,
+                          borderRadius: 8,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Text style={{color: 'white'}}>Delete</Text>
+                      </TouchableOpacity>
+                      <View>
+                        <Text>{idx + 1}.jpg</Text>
+                      </View>
+                    </View>
                   </View>
-                </View>
-              </View>
-            );
-          })}
-        </ScrollView>
-        <View style={{flex: 1, marginTop: 10}}>
-          <Button
-            style={{justifyContent: 'center', backgroundColor: 'gray'}}
-            onPress={this.handleAddImage}>
-            <Text style={{color: 'white', fontSize: 20}}>+ Image</Text>
-          </Button>
+                );
+              })}
+            </ScrollView>
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              marginTop: Dimensions.get('screen').height * 0.01,
+            }}>
+            <View>
+              <Button
+                style={{
+                  justifyContent: 'center',
+                  backgroundColor: '#fbc531',
+                  borderRadius: 8,
+                }}
+                onPress={() => this.handleAddImage()}>
+                <Text style={{color: 'white', fontSize: 20}}>+ Image</Text>
+              </Button>
+            </View>
+            <View
+              style={{
+                marginTop: Dimensions.get('screen').height * 0.1,
+                justifyContent: 'center',
+              }}>
+              <Button
+                transparent
+                style={{
+                  justifyContent: 'center',
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  borderColor: '#4cd137',
+                }}>
+                <Text style={{color: '#4cd137', fontSize: 20}}>Upload </Text>
+              </Button>
+            </View>
+          </View>
         </View>
       </View>
     );
