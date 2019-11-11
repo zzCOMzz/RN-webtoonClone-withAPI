@@ -5,7 +5,7 @@ import {Spinner} from 'native-base';
 import {connect} from 'react-redux';
 import {getUserId, getUserToken} from '../../functions';
 import {actionGetProfile} from '../../redux/actions/actionEditProfile';
-
+console.disableYellowBox = true;
 class ReloadAllReducer extends Component {
   constructor(props) {
     super(props);

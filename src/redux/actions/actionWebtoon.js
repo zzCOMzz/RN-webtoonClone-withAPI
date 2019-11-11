@@ -9,21 +9,24 @@ export const actionGetMyWebtoon = (userId, token) => ({
   }),
 });
 
-export const actionAddMyWebtoon = (userId, webtoonTitle) => ({
-  type: `${types.ADD_MY_WEBTOON}`,
-  payload: axios.post(
-    `${Host}/user/${userId}/webtoon?webtoontitle=${webtoonTitle}`,
+export const actionGetMyEpisode = (userId, webtoonId, token) => ({
+  type: `${types.GET_MY_EPISODE}`,
+  payload: axios.get(`${Host}/user/${userId}/webtoon/${webtoonId}/episode`, {
+    headers: {authorization: `${token}`},
+  }),
+});
+
+export const actionGetMyEpisodeImage = (
+  userId,
+  webtoonId,
+  episodeid,
+  token,
+) => ({
+  type: `${types.GET_MY_EPIDOSE_IMAGE}`,
+  payload: axios.get(
+    `${Host}/user/${userId}/webtoon/${webtoonId}/episode/${episodeid}/detail`,
+    {headers: {authorization: `${token}`}},
   ),
-});
-
-export const actionUpdateMyWebtoon = (userId, webtoonId) => ({
-  type: `${types.UPDATE_MY_WEBTOON}`,
-  payload: axios.put(`${Host}/user/${userId}/webtoon/${webtoonId}`),
-});
-
-export const actionDeleteMyWebtoon = (userId, webtoonId) => ({
-  type: `${types.DELETE_MY_WEBTOON}`,
-  payload: axios.delete(`${Host}/user/${userId}/webtoon/${webtoonId}`),
 });
 
 export const actionGuestGetAllWebtoon = () => ({

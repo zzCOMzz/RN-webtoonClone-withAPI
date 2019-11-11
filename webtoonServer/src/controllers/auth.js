@@ -1,7 +1,7 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const {secret} = require('../config');
-const User = require('../models/user');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { secret } = require("../config");
+const User = require("../models/user");
 
 exports.register = async (req, res, next) => {
   const username = req.body.username;
@@ -9,13 +9,13 @@ exports.register = async (req, res, next) => {
   const password = req.body.password;
 
   try {
-    await User.findOne({email}, (err, user) => {
+    await User.findOne({ email }, (err, user) => {
       if (err)
-        return res.json({message: 'Registration Failed', success: false});
+        return res.json({ message: "Registration Failed", success: false });
       if (user)
         return res.json({
           success: false,
-          message: 'Email are Already in Use',
+          message: "Email are Already in Use"
         });
 
       return bcrypt
@@ -25,13 +25,15 @@ exports.register = async (req, res, next) => {
             username,
             email,
             password: hassPass,
+            image_profile:
+              "https://static.thenounproject.com/png/994628-200.png"
           });
           return newUser.save();
         })
         .then(_ => {
           res.status(200).json({
             success: true,
-            message: 'Registration Successful',
+            message: "Registration Successful"
           });
         });
     }).catch(err => console.log(err));
@@ -44,11 +46,11 @@ exports.login = async (req, res, next) => {
   const email = req.body.email.toLowerCase();
   const password = req.body.password;
   try {
-    await User.findOne({email}).then(user => {
+    await User.findOne({ email }).then(user => {
       if (!user)
         return res.json({
           success: false,
-          message: 'The Email You Entered is Not Registered',
+          message: "The Email You Entered is Not Registered"
         });
 
       let token = jwt.sign(email, secret);
@@ -56,16 +58,17 @@ exports.login = async (req, res, next) => {
         if (match)
           return res.status(200).json({
             success: true,
-            message: 'Login Successfully',
+            message: "Login Successfully",
             token,
             username: user.username,
             idUser: user._id,
             isCreator: user.my_creation,
+            image_profile: user.image_profile
           });
 
         return res.json({
           success: false,
-          message: 'The Password You Entered is Incorrect',
+          message: "The Password You Entered is Incorrect"
         });
       });
     });

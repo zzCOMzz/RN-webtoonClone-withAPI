@@ -51,12 +51,104 @@ export const addWebtoon = async (formData, webtoonTitle) => {
   return uploadWebtoon;
 };
 
-export const editWebtoon = async () => {};
+export const editWebtoon = async (formData, webtoonId) => {
+  const token = await getUserToken();
+  const userId = await getUserId();
 
-export const deleteWebtoon = async () => {};
+  const editWebtoon = await axios.put(
+    `${Host}/user/${userId}/webtoon/${webtoonId}`,
+    formData,
+    {headers: {Authorization: `${token}`}},
+  );
+  return editWebtoon;
+};
 
-export const addEpisode = async () => {};
-export const deleteEpisode = async () => {};
+export const deleteWebtoon = async webtoonId => {
+  const token = await getUserToken();
+  const userId = await getUserId();
 
-export const addWebtoonFav = async () => {};
-export const deleteWebtoonFav = async () => {};
+  const deleteWebtoon = await axios.delete(
+    `${Host}/user/${userId}/webtoon/${webtoonId}`,
+    {headers: {Authorization: `${token}`}},
+  );
+  return deleteWebtoon;
+};
+
+export const addEpisode = async (formData, webtoonId) => {
+  const token = await getUserToken();
+  const userId = await getUserId();
+  const addEpisode = await axios.post(
+    `${Host}/user/${userId}/webtoon/${webtoonId}/episode`,
+    formData,
+    {headers: {Authorization: `${token}`}},
+  );
+  return addEpisode;
+};
+export const deleteEpisode = async (webtoonId, episodeId) => {
+  const token = await getUserToken();
+  const userId = await getUserId();
+  const deleteEpisode = await axios.delete(
+    `${Host}/user/${userId}/webtoon/${webtoonId}/episode/${episodeId}`,
+    {headers: {Authorization: `${token}`}},
+  );
+  return deleteEpisode;
+};
+
+export const editEpisode = async (formData, webtoonId, episodeId) => {
+  const token = await getUserToken();
+  const userId = await getUserId();
+  const editEpisode = await axios.put(
+    `${Host}/user/${userId}/webtoon/${webtoonId}/episode/${episodeId}`,
+    formData,
+    {
+      headers: {Authorization: `${token}`},
+    },
+  );
+  return editEpisode;
+};
+
+export const addImageEpisode = async (formData, webtoonId, episodeId) => {
+  const token = await getUserToken();
+  const userId = await getUserId();
+  const addImageEpisode = await axios.post(
+    `${Host}/user/${userId}/webtoon/${webtoonId}/episode/${episodeId}/image`,
+    formData,
+    {
+      headers: {Authorization: `${token}`},
+    },
+  );
+  return addImageEpisode;
+};
+
+export const deleteImageEpisode = async (webtoonId, episodeId, imageId) => {
+  const token = await getUserToken();
+  const userId = await getUserId();
+  const deleteImageEps = await axios.delete(
+    `${Host}/user/${userId}/webtoon/${webtoonId}/episode/${episodeId}/image/${imageId}`,
+    {
+      headers: {Authorization: `${token}`},
+    },
+  );
+  return deleteImageEps;
+};
+
+export const addWebtoonFav = async webtoonId => {
+  const token = await getUserToken();
+  const userId = await getUserId();
+  const addFav = await axios.post(`${Host}/webtoon/${userId}`, webtoonId, {
+    headers: {Authorization: `${token}`},
+  });
+  return addFav;
+};
+
+export const deleteWebtoonFav = async webtoonId => {
+  const token = await getUserToken();
+  const userId = await getUserId();
+  const removeFav = await axios.delete(
+    `${Host}/webtoon/${userId}/${webtoonId}`,
+    {
+      headers: {Authorization: `${token}`},
+    },
+  );
+  return removeFav;
+};

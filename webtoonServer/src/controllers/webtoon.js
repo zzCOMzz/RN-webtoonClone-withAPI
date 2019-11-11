@@ -26,7 +26,10 @@ exports.addToFavourite = (req, res, next) => {
     User.findOneAndUpdate({_id: userId}).then(user => {
       Webtoon.findOne({_id: webtoonId}).exec((err, webtoon) => {
         if (err)
-          return res.json({message: 'cannot add to favorite', success: false});
+          return res.json({
+            message: 'cannot add to favorite',
+            success: false,
+          });
         const favExist = user.favourite.findIndex(item => {
           return item == webtoonId;
         });
@@ -60,13 +63,16 @@ exports.addToFavourite = (req, res, next) => {
   }
 };
 exports.removeFromFavourite = (req, res, next) => {
-  const webtoonId = req.body.webtoonid;
+  const webtoonId = req.params.webtoonid;
   const userId = req.params.iduser;
   try {
     User.findOneAndUpdate({_id: userId}).then(user => {
       Webtoon.findOne({_id: webtoonId}).exec((err, webtoon) => {
         if (err)
-          return res.json({message: 'cannot add to favorite', success: false});
+          return res.json({
+            message: 'cannot remove from favorite',
+            success: false,
+          });
         const favExist = user.favourite.findIndex(item => {
           return item == webtoonId;
         });
@@ -89,7 +95,10 @@ exports.removeFromFavourite = (req, res, next) => {
             });
           });
         } else {
-          return res.json({message: 'Webtoon Not in Favorite', success: false});
+          return res.json({
+            message: 'Webtoon Not in Favorite',
+            success: false,
+          });
         }
       });
     });
@@ -202,7 +211,7 @@ exports.deleteMyWebtoon = (req, res, next) => {
   }
 };
 
-exports.addEpisode = (req, res, next) => {
+exports.addEpisode = async (req, res, next) => {
   const userId = req.params.iduser;
   const webtoonId = req.params.webtoonid;
   const titleEpisode = req.query.episodetitle;
@@ -216,7 +225,8 @@ exports.addEpisode = (req, res, next) => {
         image_cover: cover,
         episode_id: webtoon,
       });
-
+      webtoon.episodes += 1;
+      webtoon.save();
       addEpisode.save({}, (err, episode) => {
         if (err)
           return res.json({
@@ -272,13 +282,15 @@ exports.editEpisode = (req, res, next) => {
   }
 };
 
-exports.deleteEpisode = (req, res, next) => {
+exports.deleteEpisode = async (req, res, next) => {
   const episodeId = req.params.episodeid;
+  const webtoonId = req.params.webtoonid;
   try {
-    Episode.findOneAndDelete({_id: episodeId}, (err, doc) => {
-      if (err) return res.json({message: 'deleted failed', success: false});
-      return res.json({message: 'delete success', success: true});
-    });
+    const webtoon = await Webtoon.findById(webtoonId);
+    webtoon.episodes -= 1;
+    await Episode.findByIdAndDelete(episodeId);
+    await webtoon.save();
+    res.status(204).json({message: 'Delete Success', success: true});
   } catch (error) {
     console.log(error);
   }

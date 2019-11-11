@@ -15,11 +15,11 @@ exports.uploadProfile = Multer.diskStorage({
     }
   },
   filename: (req, file, cb) => {
-    req.myProfilePhoto = `/images/${req.params.iduser}/My_Profile${path.extname(
-      file.originalname,
-    )}`;
+    req.myProfilePhoto = `/images/${
+      req.params.iduser
+    }/${new Date()}-My_Profile.png`;
     // cb(null, `My_Profile${path.extname(file.originalname)}`);
-    cb(null, `My_Profile.png`);
+    cb(null, `${new Date()}-My_Profile.png`);
   },
 });
 
@@ -41,12 +41,12 @@ exports.addImageBannerWebtoon = Multer.diskStorage({
   filename: (req, file, cb) => {
     req.bannerurl = `/images/${req.params.iduser}/${req.query.webtoontitle}/${
       req.query.webtoontitle
-    }-${new Date().getSeconds()}-webtoon-${path.extname(file.originalname)}`;
+    }-${new Date().getSeconds()}-webtoon${path.extname(file.originalname)}`;
     cb(
       null,
       `${
         req.query.webtoontitle
-      }-${new Date().getSeconds()}-webtoon-${path.extname(file.originalname)}`,
+      }-${new Date().getSeconds()}-webtoon${path.extname(file.originalname)}`,
     );
   },
 });

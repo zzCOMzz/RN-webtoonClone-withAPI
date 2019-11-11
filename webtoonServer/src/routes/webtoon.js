@@ -10,7 +10,11 @@ router.get('/:search', WebtoonControllers.seacrhWithTitle);
 
 // todo  favourite
 router.post('/:iduser', checkToken, WebtoonControllers.addToFavourite);
-router.delete('/:iduser', checkToken, WebtoonControllers.removeFromFavourite);
+router.delete(
+  '/:iduser/:webtoonid',
+  checkToken,
+  WebtoonControllers.removeFromFavourite,
+);
 
 // todo get episode list
 router.get('/:webtoonid/episode', checkToken, WebtoonControllers.getEpisode);
