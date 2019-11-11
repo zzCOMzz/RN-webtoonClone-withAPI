@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 import {Item, Input, Icon, Card, CardItem, Button, Label} from 'native-base';
 import {initLoginState} from 'reducers';
-export default class EditEpisode extends Component {
+import {connect} from 'react-redux';
+class EditEpisode extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,37 +26,17 @@ export default class EditEpisode extends Component {
         <View style={{marginTop: '3%'}}>
           <Text style={{fontSize: 20}}>Title</Text>
           <Item reguler style={Styles.searchInput}>
-            <Input value={dataImage[0].title} style={{marginHorizontal: 10}} />
+            <Input
+              value={this.props.navigation.getParam('titleWebtoon')}
+              style={{marginHorizontal: 10}}
+            />
           </Item>
         </View>
         <View style={{flex: 1, marginTop: '2%'}}>
           <Text style={{fontSize: 20}}>Episode</Text>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={dataImage}
-            renderItem={({item}) => {
-              let date = item.id + 1;
-              return (
-                <Card key={item.id}>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('EditEpisode')
-                    }>
-                    <CardItem>
-                      <Image source={{uri: item.url}} style={Styles.image} />
-                      <View style={{marginLeft: 15}}>
-                        <Text style={Styles.titleItem}>Ep. {item.id + 1}</Text>
-                        <Text style={{fontSize: 12}}>
-                          {(date += date + item.id)} May 2019
-                        </Text>
-                      </View>
-                    </CardItem>
-                  </TouchableOpacity>
-                </Card>
-              );
-            }}
-            keyExtractor={item => item.id}
-          />
+          {/*
+          FlatList
+          */}
         </View>
         <View style={{flex: 1, marginTop: 10}}>
           <Button
@@ -82,6 +63,8 @@ export default class EditEpisode extends Component {
     );
   }
 }
+
+export default connect()(EditEpisode);
 
 const Styles = StyleSheet.create({
   searchInput: {

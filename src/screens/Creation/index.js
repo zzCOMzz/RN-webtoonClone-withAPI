@@ -42,7 +42,9 @@ class Creation extends Component {
                 <Card key={item._id}>
                   <TouchableOpacity
                     onPress={() =>
-                      this.props.navigation.navigate('EditWebtoon')
+                      this.props.navigation.navigate('EditWebtoon', {
+                        titleWebtoon: item.title,
+                      })
                     }>
                     <CardItem>
                       <Image

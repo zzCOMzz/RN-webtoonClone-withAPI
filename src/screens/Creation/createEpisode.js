@@ -12,6 +12,7 @@ import {
 import {Item, Input, Icon, Card, CardItem, Button, Label} from 'native-base';
 import {initLoginState} from 'reducers';
 import ImagePicker from 'react-native-image-picker';
+import CropPicker from 'react-native-image-crop-picker';
 export default class CreateEpisode extends Component {
   constructor(props) {
     super(props);
@@ -47,6 +48,7 @@ export default class CreateEpisode extends Component {
           type: res.type,
           fileName: res.fileName,
         };
+
         this.setState({
           imageEpisodeCover: opt,
         });
@@ -55,32 +57,44 @@ export default class CreateEpisode extends Component {
   };
 
   handleAddImage = () => {
-    const options = {
-      title: 'Select Photo',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    ImagePicker.showImagePicker(options, res => {
-      if (res.didCancel) {
-        alert('Add Image was Canceled');
-      } else if (res.error) {
-        console.log(res.error);
-        alert('Response Erorr');
-      } else if (res.customButton) {
-        console.log(res.customButton);
-      } else {
+    // const options = {
+    //   title: 'Select Photo',
+    //   storageOptions: {
+    //     skipBackup: true,
+    //     path: 'images',
+    //   },
+    // };
+    // ImagePicker.showImagePicker(options, res => {
+    //   if (res.didCancel) {
+    //     alert('Add Image was Canceled');
+    //   } else if (res.error) {
+    //     console.log(res.error);
+    //     alert('Response Erorr');
+    //   } else if (res.customButton) {
+    //     console.log(res.customButton);
+    //   } else {
+    //     let opt = {
+    //       uri: res.uri,
+    //       type: res.type,
+    //       fileName: res.fileName,
+    //     };
+
+    //     this.setState({
+    //       imageEpisode: [...this.state.imageEpisode, opt],
+    //     });
+    //   }
+    // });
+
+    CropPicker.openPicker({multiple: true}).then(images => {
+      console.log(images);
+      images.map(image => {
         let opt = {
-          uri: res.uri,
-          type: res.type,
-          fileName: res.fileName,
+          uri: image.path,
+          mime: image.mime,
         };
 
-        this.setState({
-          imageEpisode: [...this.state.imageEpisode, opt],
-        });
-      }
+        this.setState({imageEpisode: [...this.state.imageEpisode, opt]});
+      });
     });
   };
 
@@ -122,10 +136,9 @@ export default class CreateEpisode extends Component {
           {this.state.imageEpisode.map((item, idx) => {
             return (
               <View
-                key={item.fileName}
+                key={item.uri}
                 style={{justifyContent: 'space-around', flexDirection: 'row'}}>
                 <Image
-                  key={item.fileName}
                   source={item}
                   style={{width: 90, height: 90, marginBottom: 20}}
                 />
@@ -143,9 +156,7 @@ export default class CreateEpisode extends Component {
                     <Text style={{color: 'white'}}>Delete</Text>
                   </TouchableOpacity>
                   <View>
-                    <Text>
-                      {idx + 1}_{item.fileName.slice(0, 10)}
-                    </Text>
+                    <Text>{idx + 1}.jpg</Text>
                   </View>
                 </View>
               </View>
