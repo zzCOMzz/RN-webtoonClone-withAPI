@@ -23,19 +23,23 @@ import {
 } from 'native-base';
 import ImagePicker from 'react-native-image-picker';
 import CropPicker from 'react-native-image-crop-picker';
-import {actionGetMyEpisode} from '../../redux/actions/actionWebtoon';
+import {
+  actionGetMyEpisode,
+  actionGetMyWebtoon,
+} from '../../redux/actions/actionWebtoon';
 import {
   addEpisode,
   addImageEpisode,
   getUserId,
   getUserToken,
 } from '../../functions';
+import {connect} from 'react-redux';
 
 let imageStatic = {
   uri:
     'https://images.vexels.com/media/users/3/130153/isolated/preview/93a30c258ebb3defaeabbe2568d9425b-dslr-camera-icon-by-vexels.png',
 };
-export default class CreateEpisode extends Component {
+class CreateEpisode extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -147,7 +151,9 @@ export default class CreateEpisode extends Component {
         webtoonId: this.props.navigation.getParam('webtoonId'),
         webtoonTitle: this.props.navigation.getParam('webtoonTitle'),
       });
-      await actionGetMyEpisode(userId, this.state.webtoonId, token);
+      await this.props.actionGetMyEpisode(userId, this.state.webtoonId, token);
+      await this.props.actionGetMyWebtoon(userId, token);
+      this.props.navigation.navigate('EditWebtoon');
     } else {
       this.setState({
         isLoading: false,
@@ -310,6 +316,15 @@ export default class CreateEpisode extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {};
+};
+
+export default connect(
+  mapStateToProps,
+  {actionGetMyEpisode, actionGetMyWebtoon},
+)(CreateEpisode);
 
 const Styles = StyleSheet.create({
   searchInput: {

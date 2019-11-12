@@ -87,7 +87,7 @@ class EditProfileScreen extends Component {
     await editProfile(formData);
     await this.props.editProfile(userId, token);
 
-    if (this.props.userData.data.profile_name !== null) {
+    if (this.props.userData.data.username !== null) {
       this.props.navigation.navigate('Profile');
     } else {
       ToastAndroid.showWithGravity(

@@ -68,6 +68,11 @@ class Creation extends Component {
                             favourite : {item.favourite}
                           </Text>
                         </View>
+                        {item.episodes <= 0 ? (
+                          <Text>0 Episode</Text>
+                        ) : (
+                          <Text>{item.episodes} Episodes</Text>
+                        )}
                       </View>
                     </CardItem>
                   </TouchableOpacity>
