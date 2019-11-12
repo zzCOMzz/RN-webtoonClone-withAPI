@@ -101,17 +101,12 @@ exports.addEpisode = Multer.diskStorage({
     }
   },
   filename: (req, file, cb) => {
-    req.imageUri = `/images/${req.params.iduser}/${req.query.webtoontitle}/${
-      req.query.episodetitle
-    }/${req.query.webtoontitle}-${
-      req.query.episodetitle
-    }-${new Date().getSeconds()}-${file.originalname}`;
+    req.imageUri = `/images/${req.params.iduser}/${req.query.webtoontitle}/${req.query.episodetitle}/${req.query.webtoontitle}-${req.query.episodetitle}-${file.originalname}`;
     req.imageName = file.originalname;
+
     cb(
       null,
-      `${req.query.webtoontitle}-${
-        req.query.episodetitle
-      }-${new Date().getSeconds()}-${file.originalname}`,
+      `${req.query.webtoontitle}-${req.query.episodetitle}-${file.originalname}`,
     );
   },
 });

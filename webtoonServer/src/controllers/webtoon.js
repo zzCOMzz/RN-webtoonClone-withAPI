@@ -217,25 +217,25 @@ exports.addEpisode = async (req, res, next) => {
   const titleEpisode = req.query.episodetitle;
   const cover = req.coverUri;
   try {
-    Webtoon.findOne({_id: webtoonId, creator: userId}, (err, webtoon) => {
-      if (err) return res.json({message: 'Webtoon Not Found!', success: false});
+    const webtoon = await Webtoon.findOne({_id: webtoonId}).catch(_ =>
+      res.json({message: 'Webtoon Not Found!', success: false}),
+    );
+    webtoon.episodes += 1;
+    webtoon.save();
 
-      const addEpisode = new Episode({
-        title: titleEpisode,
-        image_cover: cover,
-        episode_id: webtoon,
-      });
-      webtoon.episodes += 1;
-      webtoon.save();
-      addEpisode.save({}, (err, episode) => {
-        if (err)
-          return res.json({
-            success: false,
-            message:
-              'Failed on Create Episode, Please Update With Cover of Episode',
-          });
-        return res.json({success: true, data: episode});
-      });
+    const newEpisode = new Episode({
+      title: titleEpisode,
+      image_cover: cover,
+      webtoon_id: webtoon,
+    });
+    newEpisode.save({}, (err, episode) => {
+      if (err)
+        return res.json({
+          success: false,
+          message:
+            'Failed on Create Episode, Please Update With Cover of Episode',
+        });
+      return res.json({success: true, data: episode});
     });
   } catch (error) {
     console.log(error);
@@ -250,7 +250,7 @@ exports.getEpisode = (req, res, next) => {
     //   if (err) return res.json({message: 'Episode Not Found', success: false});
     //   return res.json({data: episode});
     // });
-    Episode.find({episode_id: webtoonId}).exec((err, episode) => {
+    Episode.find({webtoon_id: webtoonId}).exec((err, episode) => {
       if (err) return res.json({message: 'Episode Not Found', success: false});
       return res.json({data: episode});
     });
@@ -304,20 +304,26 @@ exports.addImageToEpisode = (req, res, next) => {
   const imageName = req.imageName;
 
   try {
-    Episode.findOne({_id: episodeId}, (err, episode) => {
-      if (err) return res.json({message: 'Episode Not Found', success: false});
+    req.files.forEach(item => {
+      let imagePath = item.path.slice(15);
 
-      const addImageEpisode = new ImageEpisode({
-        image_id: episodeId,
-        image_url: imageUrl,
-        image_name: imageName,
-      });
+      Episode.findOne({_id: episodeId}, (err, episode) => {
+        if (err)
+          return res.json({message: 'Episode Not Found', success: false});
 
-      addImageEpisode.save({}, (err, image) => {
-        if (err) return res.json({message: 'add image failed', success: false});
-        return res.json({message: 'add image success', success: true});
+        const addImageEpisode = new ImageEpisode({
+          episode_id: episodeId,
+          image_url: `/images${imagePath}`,
+          image_name: item.originalname,
+        });
+
+        addImageEpisode.save({}, (err, image) => {
+          if (err)
+            return res.json({message: 'add image failed', success: false});
+        });
       });
     });
+    return res.json({message: 'add image success', success: true});
   } catch (error) {
     console.log(error);
   }
@@ -329,7 +335,7 @@ exports.getDetailEpisode = (req, res, next) => {
   const episodeId = req.params.episodeid;
 
   try {
-    ImageEpisode.find({image_id: episodeId}, (err, episode) => {
+    ImageEpisode.find({episode_id: episodeId}, (err, episode) => {
       if (err) return res.json({message: 'not valid image', success: false});
       return res.json({data: episode});
     });

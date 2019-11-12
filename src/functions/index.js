@@ -74,11 +74,16 @@ export const deleteWebtoon = async webtoonId => {
   return deleteWebtoon;
 };
 
-export const addEpisode = async (formData, webtoonId) => {
+export const addEpisode = async (
+  formData,
+  webtoonId,
+  webtoonTitle,
+  episodeTitle,
+) => {
   const token = await getUserToken();
   const userId = await getUserId();
   const addEpisode = await axios.post(
-    `${Host}/user/${userId}/webtoon/${webtoonId}/episode`,
+    `${Host}/user/${userId}/webtoon/${webtoonId}/episode?webtoontitle=${webtoonTitle}&episodetitle=${episodeTitle}`,
     formData,
     {headers: {Authorization: `${token}`}},
   );
@@ -107,11 +112,17 @@ export const editEpisode = async (formData, webtoonId, episodeId) => {
   return editEpisode;
 };
 
-export const addImageEpisode = async (formData, webtoonId, episodeId) => {
+export const addImageEpisode = async (
+  formData,
+  webtoonId,
+  webtoonTitle,
+  episodeId,
+  episodeTitle,
+) => {
   const token = await getUserToken();
   const userId = await getUserId();
   const addImageEpisode = await axios.post(
-    `${Host}/user/${userId}/webtoon/${webtoonId}/episode/${episodeId}/image`,
+    `${Host}/user/${userId}/webtoon/${webtoonId}/episode/${episodeId}/image?webtoontitle=${webtoonTitle}&episodetitle=${episodeTitle}`,
     formData,
     {
       headers: {Authorization: `${token}`},

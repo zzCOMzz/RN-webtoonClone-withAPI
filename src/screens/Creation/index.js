@@ -43,7 +43,8 @@ class Creation extends Component {
                   <TouchableOpacity
                     onPress={() =>
                       this.props.navigation.navigate('EditWebtoon', {
-                        titleWebtoon: item.title,
+                        webtoonTitle: item.title,
+                        webtoonId: item._id,
                       })
                     }>
                     <CardItem>

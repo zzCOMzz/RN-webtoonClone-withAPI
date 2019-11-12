@@ -10,7 +10,7 @@ const EpisodeSchema = new Schema({
     type: String,
     required: true,
   },
-  episode_id: {
+  webtoon_id: {
     type: Schema.Types.ObjectId,
     ref: 'Webtoon',
   },

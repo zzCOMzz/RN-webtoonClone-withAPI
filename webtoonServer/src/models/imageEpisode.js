@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const imageEpisode = new Schema({
-  image_id: {
+  episode_id: {
     type: Schema.Types.ObjectId,
     ref: 'Episode',
   },

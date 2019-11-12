@@ -11,23 +11,34 @@ import {
 import {Item, Input, Icon, Card, CardItem, Button, Label} from 'native-base';
 import {initLoginState} from 'reducers';
 import {connect} from 'react-redux';
+import {
+  actionGetMyEpisode,
+  actionGetMyWebtoon,
+} from '../../redux/actions/actionWebtoon';
+import {getUserId, getUserToken} from '../../functions';
+
 class EditEpisode extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataImage: initLoginState.banners,
+      webtoonId: this.props.navigation.getParam('webtoonId'),
     };
   }
 
+  async componentDidMount() {
+    const userId = await getUserId();
+    const token = await getUserToken();
+    await this.props.getMyEpisode(userId, this.state.webtoonId, token);
+    console.log('My EPISODE ', this.props);
+  }
   render() {
-    const {dataImage} = this.state;
     return (
       <View style={{flex: 1, marginHorizontal: 10}}>
         <View style={{marginTop: '3%'}}>
           <Text style={{fontSize: 20}}>Title</Text>
           <Item reguler style={Styles.searchInput}>
             <Input
-              value={this.props.navigation.getParam('titleWebtoon')}
+              value={this.props.navigation.getParam('webtoonTitle')}
               style={{marginHorizontal: 10}}
             />
           </Item>
@@ -42,7 +53,10 @@ class EditEpisode extends Component {
           <Button
             warning
             onPress={() =>
-              this.props.navigation.navigate('CreateWebtoonEpisode')
+              this.props.navigation.navigate('CreateWebtoonEpisode', {
+                webtoonId: this.state.webtoonId,
+                webtoonTitle: this.props.navigation.getParam('webtoonTitle'),
+              })
             }
             style={{justifyContent: 'center'}}>
             <Text style={{color: 'white'}}>+ Add Episode</Text>
@@ -64,7 +78,21 @@ class EditEpisode extends Component {
   }
 }
 
-export default connect()(EditEpisode);
+const mapStateToProps = state => {
+  return {
+    myEpisode: state.getEpisode.data,
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    getMyEpisode: (userId, webtoonId, token) =>
+      dispatch(actionGetMyEpisode(userId, webtoonId, token)),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(EditEpisode);
 
 const Styles = StyleSheet.create({
   searchInput: {
