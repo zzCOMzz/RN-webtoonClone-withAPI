@@ -24,7 +24,7 @@ export const actionGetMyEpisodeImage = (
 ) => ({
   type: `${types.GET_MY_EPIDOSE_IMAGE}`,
   payload: axios.get(
-    `${Host}/user/${userId}/webtoon/${webtoonId}/episode/${episodeid}/detail`,
+    `${Host}/user/${userId}/webtoon/${webtoonId}/episode/${episodeid}/image`,
     {headers: {authorization: `${token}`}},
   ),
 });

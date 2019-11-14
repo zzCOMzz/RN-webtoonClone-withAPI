@@ -65,32 +65,40 @@ class EditEpisode extends Component {
               data={this.props.myEpisode.data}
               renderItem={({item, index}) => {
                 return (
-                  <View
-                    key={item._id}
-                    style={{flexDirection: 'row', margin: 10}}>
-                    <Image
-                      source={{uri: `${host}${item.image_cover}`}}
-                      style={{
-                        width: 80,
-                        height: 80,
-                        borderRadius: 8,
-                      }}
-                    />
-                    <View style={{marginLeft: 15}}>
-                      <Text
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('EditEpisode', {
+                        episodeId: item._id,
+                        webtoonId: this.state.webtoonId,
+                        episodeTitle: item.title,
+                      })
+                    }
+                    key={item._id}>
+                    <View style={{flexDirection: 'row', margin: 10}}>
+                      <Image
+                        source={{uri: `${host}${item.image_cover}`}}
                         style={{
-                          fontSize: 18,
-                          fontWeight: 'bold',
-                          fontStyle: 'italic',
-                        }}>
-                        Ep.{index + 1}
-                      </Text>
-                      <Text style={{fontSize: 16}}>{item.title}</Text>
-                      <Text style={{fontSize: 16}}>
-                        Update at {item.update_at.slice(0, 10)}
-                      </Text>
+                          width: 80,
+                          height: 80,
+                          borderRadius: 8,
+                        }}
+                      />
+                      <View style={{marginLeft: 15}}>
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            fontStyle: 'italic',
+                          }}>
+                          Ep.{index + 1}
+                        </Text>
+                        <Text style={{fontSize: 16}}>{item.title}</Text>
+                        <Text style={{fontSize: 16}}>
+                          Update at {item.update_at.slice(0, 10)}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 );
               }}
             />
@@ -138,10 +146,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(actionGetMyWebtoon(userId, token)),
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(EditEpisode);
+export default connect(mapStateToProps, mapDispatchToProps)(EditEpisode);
 
 const Styles = StyleSheet.create({
   searchInput: {

@@ -10,39 +10,63 @@ import {
 } from 'react-native';
 import {Item, Input, Icon, Card, CardItem, Button, Label} from 'native-base';
 import {initLoginState} from 'reducers';
-export default class EditEpisode extends Component {
+import {actionGetMyEpisodeImage} from '../../redux/actions/actionWebtoon';
+import {connect} from 'react-redux';
+import {host} from '../../functions/host';
+import {getUserId, getUserToken} from '../../functions';
+class EditEpisode extends Component {
   constructor(props) {
     super(props);
+    const {navigation} = this.props;
+
     this.state = {
       dataImage: initLoginState.banners,
+      episodeTitle: navigation.getParam('episodeTitle'),
+      episodeId: navigation.getParam('episodeId'),
+      webtoonId: navigation.getParam('webtoonId'),
     };
+  }
+  async componentDidMount() {
+    const token = await getUserToken();
+    const userId = await getUserId();
+
+    await this.props.getMyImageEpisode(
+      userId,
+      this.state.webtoonId,
+      this.state.episodeId,
+      token,
+    );
   }
 
   render() {
     const {dataImage} = this.state;
+    this.props.myEpisodeImage;
     return (
       <View style={{flex: 1, marginHorizontal: 10}}>
         <View style={{marginTop: '3%'}}>
           <Text style={{fontSize: 20}}>Title</Text>
           <Item reguler style={Styles.searchInput}>
-            <Input value={'Ep.1'} style={{marginHorizontal: 10}} />
+            <Input
+              value={this.state.episodeTitle}
+              style={{marginHorizontal: 10}}
+            />
           </Item>
         </View>
         <View style={{flex: 1, marginTop: '2%'}}>
           <Text style={{fontSize: 20}}>Episode</Text>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={dataImage}
+            data={this.props.myEpisodeImage.data}
             renderItem={({item}) => {
-              let date = item.id + 1;
               return (
-                <Card key={item.id}>
+                <Card key={item._id}>
                   <CardItem>
-                    <Image source={{uri: item.url}} style={Styles.image} />
+                    <Image
+                      source={{uri: `${host}${item.image_url}`}}
+                      style={Styles.image}
+                    />
                     <View style={{marginLeft: 15}}>
-                      <Text style={Styles.titleItem}>
-                        Gambar{item.id + 1}.png
-                      </Text>
+                      <Text style={Styles.titleItem}>{item.image_name}</Text>
                     </View>
                   </CardItem>
                 </Card>
@@ -77,6 +101,19 @@ export default class EditEpisode extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    myEpisodeImage: state.getDetailMyEpisode.data,
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    getMyImageEpisode: (userId, webtoonId, episodeId, token) =>
+      dispatch(actionGetMyEpisodeImage(userId, webtoonId, episodeId, token)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditEpisode);
 const Styles = StyleSheet.create({
   searchInput: {
     borderWidth: 8,
